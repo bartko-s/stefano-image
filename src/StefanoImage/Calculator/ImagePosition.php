@@ -83,7 +83,7 @@ class ImagePosition
             $r2 = $this->getCanvasHeight() / $this->getImageHeight();
             
             if($r1 > $r2) {
-                return round(($this->getCanvasWidth() + $this->getCalculatedWidth()) / 2);
+                return round(($this->getCanvasWidth() / 2) - ($this->getCalculatedWidth() / 2));
             } else {
                 return 0;
             }
@@ -103,7 +103,7 @@ class ImagePosition
             if($r1 > $r2) {
                 return 0;
             } else {
-                return round(($this->getCanvasHeight() + $this->getCalculatedHeight()) / 2);
+                return round(($this->getCanvasHeight() / 2) - ($this->getCalculatedHeight() / 2));
             }
         }
     }
