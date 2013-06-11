@@ -9,6 +9,11 @@ class Canvas
     private $maxOutputHeight = 0;
     private $keepAspectRatio = true;
     
+    /**
+     * @param int $inputWidth
+     * @param int $inputHeight
+     * @return \StefanoImage\Calculator\Canvas
+     */
     public function inputResolution($inputWidth, $inputHeight) {
         $this->inputWidth = abs(round($inputWidth));
         $this->inputHeight = abs(round($inputHeight));
@@ -16,14 +21,25 @@ class Canvas
         return $this;
     }
     
+    /**
+     * @return int
+     */
     private function getInputWidth() {
         return $this->inputWidth;
     }
     
+    /**
+     * @return int
+     */
     private function getInputHeight() {
         return $this->inputHeight;
     }
     
+    /**
+     * @param int $maxOutputWidth
+     * @param int $maxOutputHeight
+     * @return \StefanoImage\Calculator\Canvas
+     */
     public function maxOutputResolution($maxOutputWidth, $maxOutputHeight) {
         $this->maxOutputWidth = abs(round($maxOutputWidth));
         $this->maxOutputHeight = abs(round($maxOutputHeight));
@@ -31,23 +47,39 @@ class Canvas
         return $this;
     }
     
+    /**
+     * @return int
+     */
     private function getMaxOutputWidth() {
         return $this->maxOutputWidth;
     }
     
+    /**
+     * @return int
+     */
     private function getMaxOutputHeight() {
         return $this->maxOutputHeight;
     }
     
+    /**
+     * @param int $keepAspectRatio
+     * @return \StefanoImage\Calculator\Canvas
+     */
     public function keepAspectRatio($keepAspectRatio) {
         $this->keepAspectRatio = (bool) $keepAspectRatio;
         return $this;
     }
     
+    /**
+     * @return int
+     */
     private function getKeepAspectRatio() {
         return $this->keepAspectRatio;
     }
     
+    /**
+     * @return int
+     */
     public function getCalculatedCanvasWidth() {
         $inputWidth = $this->getInputWidth();
         $inputHeight = $this->getInputHeight();
@@ -80,11 +112,14 @@ class Canvas
             } else {
                 return $maxOutWidth;
             }
-        } elseif(0 != $maxOutWidth && 0 != $maxOutHeigth && false == $keepAspectRatio) {
+        } else { //elseif(0 != $maxOutWidth && 0 != $maxOutHeigth && false == $keepAspectRatio) {
             return $maxOutWidth;
         }
     }
     
+    /**
+     * @return int
+     */
     public function getCalculatedCanvasHeight() {
         $inputWidth = $this->getInputWidth();
         $inputHeight = $this->getInputHeight();
@@ -117,7 +152,7 @@ class Canvas
             } else {
                 return $maxOutHeigth;
             }
-        } elseif(0 != $maxOutWidth && 0 != $maxOutHeigth && false == $keepAspectRatio) {
+        } else { //elseif(0 != $maxOutWidth && 0 != $maxOutHeigth && false == $keepAspectRatio) {
             return $maxOutHeigth;
         }
     }
