@@ -1,6 +1,12 @@
 <?php
 namespace StefanoImage\Calculator;
 
+/**
+ * Canvas Calculator
+ * 
+ * Na zaklade povodneho rozlisenia obrazka a hranicnych vystupnych podmienok
+ * vypocita celkove rozmery vystupneho obrazka
+ */
 class Canvas
 {
     private $inputWidth = 0;
