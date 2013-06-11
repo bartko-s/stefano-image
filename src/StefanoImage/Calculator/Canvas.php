@@ -16,15 +16,18 @@ class Canvas
     private $keepAspectRatio = true;
     
     /**
-     * @param int $inputWidth
-     * @param int $inputHeight
-     * @return \StefanoImage\Calculator\Canvas
+     * 
+     * @param int $inputImageWidth
+     * @param int $inputImageHeight
+     * @param int $maxOutputImageWidth null is unlimited
+     * @param int $maxOutputImageHeight null is unlimited
      */
-    public function inputResolution($inputWidth, $inputHeight) {
-        $this->inputWidth = abs(round($inputWidth));
-        $this->inputHeight = abs(round($inputHeight));
-        
-        return $this;
+    public function __construct($inputImageWidth, $inputImageHeight, 
+            $maxOutputImageWidth = null, $maxOutputImageHeight = null) {        
+        $this->inputWidth = abs(round($inputImageWidth));
+        $this->inputHeight = abs(round($inputImageHeight));
+        $this->maxOutputWidth = abs(round($maxOutputImageWidth));
+        $this->maxOutputHeight = abs(round($maxOutputImageHeight));
     }
     
     /**
@@ -39,18 +42,6 @@ class Canvas
      */
     private function getInputHeight() {
         return $this->inputHeight;
-    }
-    
-    /**
-     * @param int $maxOutputWidth
-     * @param int $maxOutputHeight
-     * @return \StefanoImage\Calculator\Canvas
-     */
-    public function maxOutputResolution($maxOutputWidth, $maxOutputHeight) {
-        $this->maxOutputWidth = abs(round($maxOutputWidth));
-        $this->maxOutputHeight = abs(round($maxOutputHeight));
-        
-        return $this;
     }
     
     /**
