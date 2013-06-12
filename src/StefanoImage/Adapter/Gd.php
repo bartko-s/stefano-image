@@ -55,6 +55,7 @@ class Gd
                 $sourceImage,
                 $x, $y, 0, 0, $width, $height, $imageinfo[0], $imageinfo[1]);
         
+        imagedestroy($sourceImage);
         return $this;
     }
 
@@ -96,7 +97,7 @@ class Gd
                 
         return $this;
     }  
-    
+        
     private function getCanvas() {
         return $this->canvas;
     }
