@@ -36,39 +36,39 @@ class CanvasTest
     }
     
     public function testChangeMaxOutputResolutionKeepAspectRatio() {
-        $calculator = new CanvasCalculator(51, 501, 150, 30);
+        $calculator = new CanvasCalculator(150, 30, 50, 50);
                            
-        $this->assertEquals(3, $calculator->getCalculatedCanvasWidth());
-        $this->assertEquals(30, $calculator->getCalculatedCanvasHeight());        
+        $this->assertEquals(50, $calculator->getCalculatedCanvasWidth());
+        $this->assertEquals(10, $calculator->getCalculatedCanvasHeight());        
         
         //new test
-        $calculator2 = new CanvasCalculator(51, 501, 30, 350);
+        $calculator2 = new CanvasCalculator(30, 150, 50, 50);
         
-        $this->assertEquals(30, $calculator2->getCalculatedCanvasWidth());
-        $this->assertEquals(295, $calculator2->getCalculatedCanvasHeight());        
+        $this->assertEquals(10, $calculator2->getCalculatedCanvasWidth());
+        $this->assertEquals(50, $calculator2->getCalculatedCanvasHeight());        
     }
     
     public function testChangeMaxOutputWidthDontKeepAspectRatio() {
-        $calculator = new CanvasCalculator(126, 523, 50);
+        $calculator = new CanvasCalculator(150, 500, 50);
         $calculator->keepAspectRatio(false);
                            
         $this->assertEquals(50, $calculator->getCalculatedCanvasWidth());
-        $this->assertEquals(208, $calculator->getCalculatedCanvasHeight());
+        $this->assertEquals(167, $calculator->getCalculatedCanvasHeight());
     }
     
     public function testChangeMaxOutputHeightDontKeepAspectRatio() {
-        $calculator = new CanvasCalculator(127, 145, null, 45);
+        $calculator = new CanvasCalculator(150, 500, null, 50);
         $calculator->keepAspectRatio(false);
                            
-        $this->assertEquals(39, $calculator->getCalculatedCanvasWidth());
-        $this->assertEquals(45, $calculator->getCalculatedCanvasHeight());
+        $this->assertEquals(15, $calculator->getCalculatedCanvasWidth());
+        $this->assertEquals(50, $calculator->getCalculatedCanvasHeight());
     }
     
     public function testChangeOutputResolutionDontKeepAspectRatio() {
-        $calculator = new CanvasCalculator(748, 259, 25, 45);
+        $calculator = new CanvasCalculator(750, 250, 50, 50);
         $calculator->keepAspectRatio(false);
                            
-        $this->assertEquals(25, $calculator->getCalculatedCanvasWidth());
-        $this->assertEquals(45, $calculator->getCalculatedCanvasHeight());
+        $this->assertEquals(50, $calculator->getCalculatedCanvasWidth());
+        $this->assertEquals(50, $calculator->getCalculatedCanvasHeight());
     }
 }
