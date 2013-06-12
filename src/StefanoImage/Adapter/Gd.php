@@ -63,7 +63,7 @@ class Gd
     }
 
     public function saveAsJpeg($path, $name, $quality = 75) {
-        $quality = $quality;
+        $quality = (int) $quality;
         if(0 > $quality) {
             $quality = 1;
         } elseif(100 < $quality) {
@@ -77,15 +77,15 @@ class Gd
     }
 
     public function saveAsPng($path, $name, $quality = 75) {
-        $quality = abs(($quality / 10) - 10);
-        if(0 > $quality) {
-            $quality = 0;
-        } elseif(9 < $quality) {
-            $quality = 9;
+        $compression = (($quality / 10) - 10) * -1;
+        if(0 > $compression) {
+            $compression = 0;
+        } elseif(9 < $compression) {
+            $compression = 9;
         }
         
         $path = $path . '/' . $name . '.png';        
-        imagepng($this->getCanvas(), $path, $quality);
+        imagepng($this->getCanvas(), $path, $compression);
                 
         return $this;
     }
