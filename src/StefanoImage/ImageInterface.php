@@ -33,7 +33,14 @@ interface ImageInterface
      * @param bool $adapt adapt canvas size to the source image proportion
      * @return self
      */
-    public function resize($width = null, $height = null, $adapt = true);    
+    public function resize($width = null, $height = null, $adapt = true);
+    
+    /**
+     * @param int $red
+     * @param int $green
+     * @param int $blue
+     * @return self
+     */
     public function backgroundColor($red, $green, $blue);
     
     /**

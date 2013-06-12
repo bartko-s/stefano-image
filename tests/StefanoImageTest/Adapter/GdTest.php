@@ -114,8 +114,17 @@ class GdTest
      * @dataProvider drawImageFromSupportedImageFileProvider
      */
     public function testDrawImageFromSupportedImageFile($file) {
+        //test only if code is called without errors
         $adapter = new GdAdapter();
         $adapter->createCanvas(10, 10)
                 ->drawImage($file, 0, 0, 5, 5);        
+    }
+    
+    public function testChangeBackgroundColor() {
+        //test only if code is called without errors
+        $adapter = new GdAdapter();
+        $adapter->createCanvas(10, 10)
+                ->backgroundColor(5, 5, 5)
+                ->backgroundColor('a', '12', 589);
     }
 }

@@ -23,6 +23,11 @@ class Image
     private $outputMaxWidth;
     private $outputMaxHeight;
     private $adaptOutputResolution = true;
+    private $bacgroundColor = array(
+        'red' => 200,
+        'green' => 200,
+        'blue' => 200,
+    );
     
     /**
      * @param \StefanoImage\Adapter\AdapterInterface $adapter
@@ -39,7 +44,13 @@ class Image
     }
 
     public function backgroundColor($red, $green, $blue) {
+        $this->bacgroundColor = array(
+            'red' => (int) $red,
+            'green' => (int) $green,
+            'blue' => (int) $blue,
+        );
         
+        return $this;
     }
 
     public function clearWatermarks() {
@@ -100,6 +111,9 @@ class Image
         $adapter->createCanvas(
                 $canvasSizeCalculator->getCalculatedCanvasWidth(), 
                 $canvasSizeCalculator->getCalculatedCanvasHeight());
+        
+        $bgColor = $this->getBackgroudnColor();
+        $adapter->backgroundColor($bgColor['red'], $bgColor['green'], $bgColor['blue']);
         
         $imagePositionCalculator = new ImagePositionCalculator(
                 $canvasSizeCalculator->getCalculatedCanvasWidth(),
@@ -239,5 +253,12 @@ class Image
      */
     private function getAdaptOutputResolution() {
         return $this->adaptOutputResolution;
+    }
+    
+    /**
+     * @return array keys [red, green, blue]
+     */
+    private function getBackgroudnColor() {
+        return $this->bacgroundColor;
     }
 }

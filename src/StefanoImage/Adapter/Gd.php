@@ -26,6 +26,14 @@ class Gd
         return $this;
     }
     
+    public function backgroundColor($red, $green, $blue) {
+        $bgColour = imagecolorallocate($this->getCanvas(), 
+                (int) $red, (int) $green, (int) $blue);
+        imagefill($this->getCanvas(), 0, 0, $bgColour);
+        
+        return $this;
+    }
+    
     public function drawImage($imagePath, $x, $y, $width, $height) {
         if(!file_exists($imagePath)) {
             throw new InvalidArgumentException('File "' . $imagePath . '" does not exist');

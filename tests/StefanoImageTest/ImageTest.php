@@ -258,4 +258,42 @@ class ImageTest
               ->resize(400, 400, false)
               ->save($targetPath, $newName);
     }
+    
+    public function testDefaultBackgroundColor() {
+        $sourceImagePath = __DIR__ . '/assets/source.jpg';
+        $targetPath = '/target';
+        $newName = 'new-image-name';
+        
+        $adapterMock = \Mockery::mock('\StefanoImage\Adapter\AdapterInterface');
+        $adapterMock->shouldIgnoreMissing();        
+        $adapterMock->shouldReceive('backgroundColor')
+                    ->with(200, 200, 200)
+                    ->andReturn($adapterMock)
+                    ->ordered()
+                    ->once();
+        
+        $image = new Image($adapterMock);
+        $image->sourceImage($sourceImagePath, false)
+              ->backgroundColor(200, 200, 200)
+              ->save($targetPath, $newName);
+    }
+    
+    public function testChangeBackgroundColor() {
+        $sourceImagePath = __DIR__ . '/assets/source.jpg';
+        $targetPath = '/target';
+        $newName = 'new-image-name';
+        
+        $adapterMock = \Mockery::mock('\StefanoImage\Adapter\AdapterInterface');
+        $adapterMock->shouldIgnoreMissing();        
+        $adapterMock->shouldReceive('backgroundColor')
+                    ->with(125, 250, 75)
+                    ->andReturn($adapterMock)
+                    ->ordered()
+                    ->once();
+        
+        $image = new Image($adapterMock);
+        $image->sourceImage($sourceImagePath, false)
+              ->backgroundColor(125, 250, 75)
+              ->save($targetPath, $newName);
+    }
 }

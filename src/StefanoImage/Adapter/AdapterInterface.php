@@ -11,6 +11,16 @@ interface AdapterInterface
     public function createCanvas($width, $height);
     
     /**
+     * Call this method after createCanvas
+     * 
+     * @param int $red from 0 to 255
+     * @param int $green from 0 to 255
+     * @param int $blue from 0 to 255
+     * @return self
+     */
+    public function backgroundColor($red, $green, $blue);
+            
+    /**
      * 
      * @param string $imagePath
      * @param int $x
