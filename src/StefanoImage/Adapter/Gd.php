@@ -76,8 +76,8 @@ class Gd
         return $this;
     }
 
-    public function saveAsPng($path, $name, $quality = 70) {
-        $quality = $quality / 10;
+    public function saveAsPng($path, $name, $quality = 75) {
+        $quality = abs(($quality / 10) - 10);
         if(0 > $quality) {
             $quality = 0;
         } elseif(9 < $quality) {
@@ -96,14 +96,14 @@ class Gd
                 
         return $this;
     }  
-        
+            
     private function getCanvas() {
         return $this->canvas;
     }
     
     private function checkDependencies() {
         if(!extension_loaded('gd')) {
-            throw new \RuntimeException('Required PHP extension "GD" was not loaded');
+            throw new RuntimeException('Required PHP extension "GD" was not loaded');
         }
     }
 }
