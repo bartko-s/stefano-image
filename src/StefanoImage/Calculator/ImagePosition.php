@@ -109,7 +109,7 @@ class ImagePosition
     }
     
     /**
-     * @return type
+     * @return int
      */
     public function getCalculatedWidth() {
         if(false == $this->getKeepAspectRatio()) {
@@ -128,7 +128,7 @@ class ImagePosition
     }
     
     /**
-     * @return type
+     * @return int
      */
     public function getCalculatedHeight() {
         if(false == $this->getKeepAspectRatio()) {
