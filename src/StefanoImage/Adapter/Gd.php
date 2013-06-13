@@ -71,39 +71,48 @@ class Gd
     }
 
     public function saveAsJpeg($path, $name, $quality = 75) {
-        $quality = (int) $quality;
-        if(0 > $quality) {
-            $quality = 1;
-        } elseif(100 < $quality) {
-            $quality = 100;
-        }
-        
-        $path = $path . '/' . $name . '.jpeg';        
-        imagejpeg($this->getCanvas(), $path, $quality);
-                
-        return $this;
+        $this->save($path, $name, 'jpeg', $quality);
     }
 
     public function saveAsPng($path, $name, $quality = 75) {
-        $compression = (($quality / 10) - 10) * -1;
-        if(0 > $compression) {
-            $compression = 0;
-        } elseif(9 < $compression) {
-            $compression = 9;
-        }
-        
-        $path = $path . '/' . $name . '.png';        
-        imagepng($this->getCanvas(), $path, $compression);
-                
+        $this->save($path, $name, 'png', $quality);                
         return $this;
     }
 
     public function saveAsGif($path, $name) {
-        $path = $path . '/' . $name . '.gif';        
-        imagegif($this->getCanvas(), $path);
-                
+        $this->save($path, $name, 'gif');                
         return $this;
     }  
+    
+    /**
+     * 
+     * @param string $path
+     * @param string $name
+     * @param string $outputType
+     * @param int $quality from 1 to 100
+     */
+    private function save($path, $name, $outputType, $quality = 75) {
+        $quality = (int) $quality;
+        if(1 > $quality) {
+            $quality = 0;
+        } elseif(100 < $quality) {
+            $quality = 100;
+        }
+        
+        $basePath = (string) $path . '/' . $name;
+        
+        if('jpeg' == $outputType) {
+            imagejpeg($this->getCanvas(), $basePath . '.jpeg', $quality);
+        } elseif('png' == $outputType) {
+            $compression = ceil(abs(($quality / 11.12) - 9));            
+            imagepng($this->getCanvas(), $basePath . '.png', $compression);
+        } elseif('gif' == $outputType) {
+            imagegif($this->getCanvas(), $basePath . '.gif');
+        } else {
+            throw new InvalidArgumentException('Unsupported "' . $outputType 
+                    . '" output type');
+        }
+    }
             
     private function getCanvas() {
         return $this->canvas;
