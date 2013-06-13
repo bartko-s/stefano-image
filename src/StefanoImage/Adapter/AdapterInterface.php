@@ -27,10 +27,10 @@ interface AdapterInterface
      * @param int $y
      * @param int $width
      * @param int $height
+     * @param int $opacity from 1 to 100
      * @return self
      */
-    public function drawImage($imagePath, $x, $y, $width, $height);
-    public function drawWatermark($watermarkPath, $x, $y, $width, $height);
+    public function drawImage($imagePath, $x, $y, $width, $height, $opacity = 100);
     
     /**
      * @param string $path

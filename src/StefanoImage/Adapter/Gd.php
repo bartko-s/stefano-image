@@ -33,41 +33,41 @@ class Gd
         
         return $this;
     }
-    
-    public function drawImage($imagePath, $x, $y, $width, $height) {
-        if(!file_exists($imagePath)) {
-            throw new InvalidArgumentException('File "' . $imagePath . '" does not exist');
+
+    public function drawImage($imagePath, $x, $y, $width, $height, $opacity = 100) {
+        $sourceImage = $this->createImageResourceFromGivenFile($imagePath);
+        
+        $opacity = (int) $opacity;
+        if(1 > $opacity) {
+            $opacity = 1;
+        } elseif(100 < $opacity) {
+            $opacity = 100;
         }
         
-        $imageinfo = getimagesize($imagePath);        
-        if(false == $imageinfo) {
-            throw new InvalidArgumentException('Given file "' . $imagePath 
-                    . '" is not image file');
-        }
-        
-        $mimeType = $imageinfo['mime'];
-        
-        if('image/jpeg' == $mimeType || 'image/pjpeg' == $mimeType) {
-            $sourceImage = imagecreatefromjpeg($imagePath);
-        } elseif('image/png' == $mimeType) {
-            $sourceImage = imagecreatefrompng($imagePath);
-        } elseif('image/gif' == $mimeType) {
-            $sourceImage = imagecreatefromgif($imagePath);
+        if(100 == $opacity) {
+            imagecopyresampled($this->getCanvas(), $sourceImage, (int) $x, (int) $y, 0, 0,
+                (int) $width, (int) $height, imagesx($sourceImage), imagesy($sourceImage));
         } else {
-            throw new InvalidArgumentException('Given file "' . $imagePath 
-                    . '" has unsupported mime type');
+            $sourceImageCanvas = imagecreatetruecolor((int) $width, (int) $height);
+
+            //keep transparency
+            $color = imagecolorallocatealpha($sourceImageCanvas, 0, 0, 0, 127);
+            imagecolortransparent($sourceImageCanvas, $color);
+            imagealphablending($sourceImageCanvas, false);
+            imagesavealpha($sourceImageCanvas, true);
+
+            imagecopyresampled($sourceImageCanvas, $sourceImage, 0, 0, 0, 0,
+                    imagesx($sourceImageCanvas), imagesy($sourceImageCanvas),
+                    imagesx($sourceImage), imagesy($sourceImage));
+
+            imagecopymerge($this->getCanvas(), $sourceImageCanvas, (int) $x, (int) $y, 0, 0,
+                    imagesx($sourceImageCanvas), imagesy($sourceImageCanvas), $opacity);
+            
+            imagedestroy($sourceImageCanvas);
         }
-        
-        imagecopyresampled(
-                $this->getCanvas(), $sourceImage, (int) $x, (int) $y,
-                0, 0, (int) $width, (int) $height, $imageinfo[0], $imageinfo[1]);
         
         imagedestroy($sourceImage);
         return $this;
-    }
-
-    public function drawWatermark($watermarkPath, $x, $y, $width, $height) {
-        
     }
 
     public function saveAsJpeg($path, $name, $quality = 75) {
@@ -113,5 +113,37 @@ class Gd
         if(!extension_loaded('gd')) {
             throw new RuntimeException('Required PHP extension "GD" was not loaded');
         }
+    }
+    
+    /**
+     * @param string $imageFilePath
+     * @return resource
+     * @throws InvalidArgumentException
+     */
+    private function createImageResourceFromGivenFile($imageFilePath) {
+        if(!file_exists($imageFilePath)) {
+            throw new InvalidArgumentException('File "' . $imageFilePath . '" does not exist');
+        }
+        
+        $imageinfo = getimagesize($imageFilePath);        
+        if(false == $imageinfo) {
+            throw new InvalidArgumentException('Given file "' . $imageFilePath 
+                    . '" is not image file');
+        }
+        
+        $mimeType = $imageinfo['mime'];
+        
+        if('image/jpeg' == $mimeType || 'image/pjpeg' == $mimeType) {
+            $imageResource = imagecreatefromjpeg($imageFilePath);
+        } elseif('image/png' == $mimeType) {
+            $imageResource = imagecreatefrompng($imageFilePath);
+        } elseif('image/gif' == $mimeType) {
+            $imageResource = imagecreatefromgif($imageFilePath);
+        } else {
+            throw new InvalidArgumentException('Given file "' . $imageFilePath 
+                    . '" has unsupported mime type');
+        }
+        
+        return $imageResource;
     }
 }

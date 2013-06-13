@@ -120,6 +120,18 @@ class GdTest
                 ->drawImage($file, 0, 0, 5, 5);        
     }
     
+    /**
+     * @dataProvider drawImageFromSupportedImageFileProvider
+     */
+    public function testDrawImageFromSupportedImageFileWithOpacity($file) {
+        //test only if code is called without errors
+        $adapter = new GdAdapter();
+        $adapter->createCanvas(10, 10)
+                ->drawImage($file, 0, 0, 5, 5, 50)
+                ->drawImage($file, 0, 0, 5, 5, -125) //wrong opacity
+                ->drawImage($file, 0, 0, 5, 5, 1256); //wrong opacity        
+    }
+    
     public function testChangeBackgroundColor() {
         //test only if code is called without errors
         $adapter = new GdAdapter();
@@ -127,4 +139,5 @@ class GdTest
                 ->backgroundColor(5, 5, 5)
                 ->backgroundColor('a', '12', 589);
     }
+    
 }
