@@ -123,13 +123,13 @@ class GdTest
     /**
      * @dataProvider drawImageFromSupportedImageFileProvider
      */
-    public function testDrawImageFromSupportedImageFileWithOpacity($file) {
+    public function testDrawWatermarkFromSupportedImage($file) {
         //test only if code is called without errors
         $adapter = new GdAdapter();
         $adapter->createCanvas(10, 10)
-                ->drawImage($file, 0, 0, 5, 5, 50)
-                ->drawImage($file, 0, 0, 5, 5, -125) //wrong opacity
-                ->drawImage($file, 0, 0, 5, 5, 1256); //wrong opacity        
+                ->drawWatermark($file, 0, 0, 5, 5, 50)
+                ->drawWatermark($file, 0, 0, 5, 5, -125) //wrong opacity
+                ->drawWatermark($file, 0, 0, 5, 5, 1256); //wrong opacity        
     }
     
     public function testChangeBackgroundColor() {
