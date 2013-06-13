@@ -72,6 +72,7 @@ class Gd
 
     public function saveAsJpeg($path, $name, $quality = 75) {
         $this->save($path, $name, 'jpeg', $quality);
+        return this;
     }
 
     public function saveAsPng($path, $name, $quality = 75) {
