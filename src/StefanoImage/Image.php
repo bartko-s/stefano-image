@@ -8,6 +8,7 @@ use StefanoImage\Adapter\AdapterInterface as ImageAdapterInterface;
 use StefanoImage\Adapter\Gd as GdAdapter;
 use StefanoImage\Calculator\Canvas as CanvasSizeCalculator;
 use StefanoImage\Calculator\ImagePosition as ImagePositionCalculator;
+use StefanoImage\Calculator\WatermarkPosition as WatermarkPositionCalculator;
 
 class Image 
     implements ImageInterface
@@ -28,6 +29,7 @@ class Image
         'green' => 200,
         'blue' => 200,
     );
+    private $watermarks = array();
     
     /**
      * @param \StefanoImage\Adapter\AdapterInterface $adapter
@@ -38,11 +40,25 @@ class Image
         }
     }
     
-    public function addWwatermarkImage($imagePath, $maxWidth, $maxHeight, 
+    public function addWatermark($imagePath, $maxWidth, $maxHeight, 
             $opacity = 30, $position = ImageInterface::WATERMARK_POSITION_CENTER) {
+        $this->watermarks[] = array(
+            'imagePath' => $imagePath,
+            'maxWidth' => $maxWidth,
+            'maxHeight' => $maxHeight,
+            'opacity' => $opacity,
+            'position' => $position,
+        );
         
+        return $this;
     }
 
+    public function clearWatermarks() {
+        $this->watermarks = array();
+        
+        return $this;
+    }
+    
     public function backgroundColor($red, $green, $blue) {
         $this->bacgroundColor = array(
             'red' => (int) $red,
@@ -51,10 +67,6 @@ class Image
         );
         
         return $this;
-    }
-
-    public function clearWatermarks() {
-        
     }
 
     public function outputFormat($outputFormat) {
@@ -127,6 +139,25 @@ class Image
                 $imagePositionCalculator->getCalculatedYPosition(), 
                 $imagePositionCalculator->getCalculatedWidth(), 
                 $imagePositionCalculator->getCalculatedHeight());
+        
+        $watermarks = $this->getWatermarks();
+        foreach($watermarks as $watermark) {
+            $inputWatermarkResolution = $this->getImageInfo($watermark['imagePath']);
+                        
+            $watermarkPositionCalculator = new WatermarkPositionCalculator(
+                    $canvasSizeCalculator->getCalculatedCanvasWidth(),
+                    $canvasSizeCalculator->getCalculatedCanvasHeight(), 
+                    $watermark['maxWidth'], $watermark['maxHeight'], 
+                    $inputWatermarkResolution['width'],
+                    $inputWatermarkResolution['height'], 
+                    $watermark['position']);
+            $adapter->drawWatermark($watermark['imagePath'], 
+                    $watermarkPositionCalculator->getCalculatedXPosition(),
+                    $watermarkPositionCalculator->getCalculatedYPosition(),
+                    $watermarkPositionCalculator->getCalculatedWidth(),
+                    $watermarkPositionCalculator->getCalculatedHeight(),
+                    $watermark['opacity']);
+        }
         
         $outputFormat = $this->getOutputFormat();
         if(self::OUTPUT_FORMAT_GIF == $outputFormat) {
@@ -260,5 +291,12 @@ class Image
      */
     private function getBackgroudnColor() {
         return $this->bacgroundColor;
+    }
+    
+    /**
+     * @return array
+     */
+    private function getWatermarks() {
+        return $this->watermarks;
     }
 }

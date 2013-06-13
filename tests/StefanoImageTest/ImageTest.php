@@ -296,4 +296,43 @@ class ImageTest
               ->backgroundColor(125, 250, 75)
               ->save($targetPath, $newName);
     }
+    
+    public function testAddWatermarksCenterDefaultPosition() {
+        $sourceImagePath = __DIR__ . '/assets/source.jpg';
+        $watermarkPath = __DIR__ . '/assets/watermark.gif';
+        $targetPath = '/target';
+        $newName = 'new-image-name';
+        
+        $adapterMock = \Mockery::mock('\StefanoImage\Adapter\AdapterInterface');
+        $adapterMock->shouldIgnoreMissing();        
+        $adapterMock->shouldReceive('drawWatermark')
+                    ->with($watermarkPath, 450, 240, 100, 20, 62)
+                    ->andReturn($adapterMock)
+                    ->twice();
+        
+        $image = new Image($adapterMock);
+        $image->sourceImage($sourceImagePath, false)
+              ->addWatermark($watermarkPath, 100, 100, 62)
+              ->addWatermark($watermarkPath, 100, 100, 62)
+              ->save($targetPath, $newName);
+    }
+    
+    public function testClearWatermarks() {
+        $sourceImagePath = __DIR__ . '/assets/source.jpg';
+        $watermarkPath = __DIR__ . '/assets/watermark.gif';
+        $targetPath = '/target';
+        $newName = 'new-image-name';
+        
+        $adapterMock = \Mockery::mock('\StefanoImage\Adapter\AdapterInterface');
+        $adapterMock->shouldIgnoreMissing();        
+        $adapterMock->shouldReceive('drawWatermark')
+                    ->andReturn($adapterMock)
+                    ->never();
+        
+        $image = new Image($adapterMock);
+        $image->sourceImage($sourceImagePath, false)
+              ->addWatermark($watermarkPath, 100, 100)
+              ->clearWatermarks()
+              ->save($targetPath, $newName);
+    }
 }
