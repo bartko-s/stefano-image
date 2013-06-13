@@ -46,11 +46,11 @@ class WatermarkPosition
         
         if(ImageInterface::WATERMARK_POSITION_TOP_LEFT == $currentPosition || 
                 ImageInterface::WATERMARK_POSITION_BOTTOM_LEFT == $currentPosition) {
-            return round($this->getCanvasWidth() / 10);
+            return round($this->getCanvasWidth() / 20);
         } elseif(ImageInterface::WATERMARK_POSITION_TOP_RIGHT == $currentPosition ||
                 ImageInterface::WATERMARK_POSITION_BOTTOM_RIGHT == $currentPosition) {
             return round($this->getCanvasWidth() - $this->getCalculatedWidth()
-                    - ($this->getCanvasWidth() / 10));
+                    - ($this->getCanvasWidth() / 20));
         } else { //default center
             return round(($this->getCanvasWidth() / 2) - ($this->getCalculatedWidth() / 2));
         }
@@ -64,11 +64,11 @@ class WatermarkPosition
         
         if(ImageInterface::WATERMARK_POSITION_TOP_LEFT == $currentPosition ||
                 ImageInterface::WATERMARK_POSITION_TOP_RIGHT == $currentPosition) {
-            return round($this->getCanvasHeight() / 10);
+            return round($this->getCanvasHeight() / 20);
         } elseif(ImageInterface::WATERMARK_POSITION_BOTTOM_LEFT == $currentPosition ||
                 ImageInterface::WATERMARK_POSITION_BOTTOM_RIGHT == $currentPosition) {
             return round($this->getCanvasHeight() - $this->getCalculatedHeight()
-                    - ($this->getCanvasHeight() / 10));
+                    - ($this->getCanvasHeight() / 20));
         } else { //default center
             return round(($this->getCanvasHeight() / 2) - ($this->getCalculatedHeight() / 2));
         }

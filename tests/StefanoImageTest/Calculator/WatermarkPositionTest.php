@@ -33,8 +33,8 @@ class WatermarkPosition
         
         $this->assertEquals(200, $calculator->getCalculatedWidth());
         $this->assertEquals(100, $calculator->getCalculatedHeight());        
-        $this->assertEquals(100, $calculator->getCalculatedXPosition());
-        $this->assertEquals(50, $calculator->getCalculatedYPosition());
+        $this->assertEquals(50, $calculator->getCalculatedXPosition());
+        $this->assertEquals(25, $calculator->getCalculatedYPosition());
     }
     
     public function testCalculateTopRightPosition() {
@@ -43,8 +43,8 @@ class WatermarkPosition
         
         $this->assertEquals(200, $calculator->getCalculatedWidth());
         $this->assertEquals(100, $calculator->getCalculatedHeight());        
-        $this->assertEquals(700, $calculator->getCalculatedXPosition());
-        $this->assertEquals(50, $calculator->getCalculatedYPosition());
+        $this->assertEquals(750, $calculator->getCalculatedXPosition());
+        $this->assertEquals(25, $calculator->getCalculatedYPosition());
     }
     
     public function testCalculateBottomLeftPosition() {
@@ -53,8 +53,8 @@ class WatermarkPosition
         
         $this->assertEquals(200, $calculator->getCalculatedWidth());
         $this->assertEquals(100, $calculator->getCalculatedHeight());        
-        $this->assertEquals(100, $calculator->getCalculatedXPosition());
-        $this->assertEquals(350, $calculator->getCalculatedYPosition());
+        $this->assertEquals(50, $calculator->getCalculatedXPosition());
+        $this->assertEquals(375, $calculator->getCalculatedYPosition());
     }
     
     public function testCalculateBottomRightPosition() {
@@ -63,7 +63,7 @@ class WatermarkPosition
         
         $this->assertEquals(200, $calculator->getCalculatedWidth());
         $this->assertEquals(100, $calculator->getCalculatedHeight());        
-        $this->assertEquals(700, $calculator->getCalculatedXPosition());
-        $this->assertEquals(350, $calculator->getCalculatedYPosition());
+        $this->assertEquals(750, $calculator->getCalculatedXPosition());
+        $this->assertEquals(375, $calculator->getCalculatedYPosition());
     }
 }
