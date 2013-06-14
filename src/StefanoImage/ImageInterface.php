@@ -11,7 +11,7 @@ interface ImageInterface
     const WATERMARK_POSITION_TOP_RIGHT = 'top-right';
     const WATERMARK_POSITION_BOTTOM_LEFT = 'bottom-left';
     const WATERMARK_POSITION_BOTTOM_RIGHT = 'bottom-right';
-    const WATERMARK_POSITION_CENTER = 'centre';
+    const WATERMARK_POSITION_CENTER = 'center';
     
     /**
      * @param string $sourceImagePath
