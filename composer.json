@@ -1,10 +1,11 @@
 {
     "name": "stefano/stefano-image",
     "description": "Image processing",
-    "version": "0.0.1-dev",
+    "version": "0.0.1",
     "license": "BSD-3-Clause",    
     "keywords": [
-        "image processing"
+        "image",
+        "resize"
     ],
     "support": {
         "source": "https://github.com/bartko-s/stefano-image",
