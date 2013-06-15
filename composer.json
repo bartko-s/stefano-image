@@ -1,7 +1,7 @@
 {
     "name": "stefano/stefano-image",
     "description": "Image processing",
-    "version": "0.0.1",
+    "version": "0.0.2-dev",
     "license": "BSD-3-Clause",    
     "keywords": [
         "image",
