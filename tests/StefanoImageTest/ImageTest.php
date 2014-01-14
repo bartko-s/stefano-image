@@ -39,7 +39,7 @@ class ImageTest
         $image->save('dest', 'name');
     }
     
-    public function testThrowExceptionIfrequiredOutputFormatIsNotSupported() {
+    public function testThrowExceptionIfRequiredOutputFormatIsNotSupported() {
         $outputFormat = 'unsupported-type';
         $image = new Image();
         
@@ -102,7 +102,7 @@ class ImageTest
               ->save($targetPath, $newName);
     }
     
-    public function testChangeOutputKvality() {
+    public function testChangeOutputQuality() {
         $sourceImagePath = __DIR__ . '/assets/source.jpg';
         $targetPath = '/target';
         $newName = 'new-image-name';
@@ -121,7 +121,7 @@ class ImageTest
               ->save($targetPath, $newName);
     }
     
-    public function testChangeOutputKvalityWrongValue() {
+    public function testChangeOutputQualityWrongValue() {
         $sourceImagePath = __DIR__ . '/assets/source.jpg';
         $targetPath = '/target';
         $newName = 'new-image-name';
@@ -139,7 +139,7 @@ class ImageTest
               ->save($targetPath, $newName);
     }
     
-    public function testChangeOutputKvalityWrongValue2() {
+    public function testChangeOutputQualityWrongValue2() {
         $sourceImagePath = __DIR__ . '/assets/source.jpg';
         $targetPath = '/target';
         $newName = 'new-image-name';
