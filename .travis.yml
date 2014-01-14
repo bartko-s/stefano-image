@@ -6,6 +6,6 @@ php:
 before_script:
   - composer self-update
   - composer install --dev
-script: phpunit --configuration tests/configuration.xml --coverage-clover tests/clover.xml
+script: phpunit --configuration tests/phpunit.xml --coverage-clover tests/clover.xml
 after_script:
   - php vendor/bin/coveralls -v
