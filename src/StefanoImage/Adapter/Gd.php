@@ -25,6 +25,14 @@ class Gd
         
         return $this;
     }
+
+    public function getCanvasWidth() {
+        return imagesx($this->getCanvas());
+    }
+
+    public function getCanvasHeight() {
+        return imagesy($this->getCanvas());
+    }
     
     public function backgroundColor($red, $green, $blue) {
         $bgColour = imagecolorallocate($this->getCanvas(), 

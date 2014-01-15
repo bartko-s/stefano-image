@@ -11,6 +11,16 @@ interface AdapterInterface
     public function createCanvas($width, $height);
     
     /**
+     * @return int
+     */
+    public function getCanvasWidth();
+
+    /**
+     * @return int
+     */
+    public function getCanvasHeight();
+
+    /**
      * Call this method after createCanvas
      * 
      * @param int $red from 0 to 255

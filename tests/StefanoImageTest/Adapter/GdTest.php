@@ -68,6 +68,20 @@ class GdTest
         $this->assertEquals($outputHeight, $fileInfo[1]);
         $this->assertEquals($outputMimeType, $fileInfo['mime']);
     }
+
+    public function testGetCanvasWidth() {
+        $adapter = new GdAdapter();
+        $adapter->createCanvas(150, 250);
+
+        $this->assertEquals(150, $adapter->getCanvasWidth());
+    }
+
+    public function testGetCanvasHeight() {
+        $adapter = new GdAdapter();
+        $adapter->createCanvas(150, 250);
+
+        $this->assertEquals(250, $adapter->getCanvasHeight());
+    }
     
     public function testThrowExceptionIfDrawImageDoesNostExist() {
         $imagePath = 'neexistuje';
