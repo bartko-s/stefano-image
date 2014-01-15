@@ -15,10 +15,9 @@ interface ImageInterface
     
     /**
      * @param string $sourceImagePath
-     * @param boolean $keepAspectRatio
      * @return self
      */
-    public function sourceImage($sourceImagePath, $keepAspectRatio = true);
+    public function sourceImage($sourceImagePath);
     
     /**
      * @param string $destination
@@ -28,21 +27,27 @@ interface ImageInterface
     public function save($destination, $name);  
     
     /**
+     * @param int $maxWidth
+     * @param int $maxHeight
+     * @return self
+     */
+    public function resize($maxWidth = null, $maxHeight = null);
+
+    /**
      * @param int $width
      * @param int $height
-     * @param bool $adapt adapt canvas size to the source image proportion
      * @return self
      */
-    public function resize($width = null, $height = null, $adapt = true);
-    
+    public function adaptiveResize($width, $height);
+
     /**
-     * @param int $red
-     * @param int $green
-     * @param int $blue
+     * @param int $width
+     * @param int $height
+     * @param array|null $color
      * @return self
      */
-    public function backgroundColor($red, $green, $blue);
-    
+    public function pad($width, $height, $color = array(200, 200, 200));
+        
     /**
      * @param int $quality form 1 to 100
      * @return self

@@ -59,7 +59,7 @@ class Image
         return $this;
     }
     
-    public function backgroundColor($red, $green, $blue) {
+    private function backgroundColor($red, $green, $blue) {
         $this->bacgroundColor = array(
             'red' => (int) $red,
             'green' => (int) $green,
@@ -97,11 +97,31 @@ class Image
         return $this;
     }
 
-    public function resize($width = null, $height = null, $adapt = true) {
+    public function resize($maxWidth = null, $maxHeight = null) {
+        $this->outputMaxWidth = (int) $maxWidth;
+        $this->outputMaxHeight = (int) $maxHeight;
+        $this->adaptOutputResolution = true;
+        
+        return $this;
+    }
+
+    public function adaptiveResize($width, $height) {
         $this->outputMaxWidth = (int) $width;
         $this->outputMaxHeight = (int) $height;
-        $this->adaptOutputResolution = (bool) $adapt;
-        
+        $this->adaptOutputResolution = false;
+
+        $this->keepSourceImageAspectRatio = false;
+
+        return $this;
+    }
+
+    public function pad($width, $height, $color = array(200, 200, 200)) {
+        $this->outputMaxWidth = (int) $width;
+        $this->outputMaxHeight = (int) $height;
+        $this->adaptOutputResolution = false;
+
+        $this->backgroundColor($color[0], $color[1], $color[2]);
+
         return $this;
     }
     
@@ -174,7 +194,7 @@ class Image
         return $this;
     }
 
-    public function sourceImage($sourceImagePath, $keepAspectRatio = true) {
+    public function sourceImage($sourceImagePath) {
         if(!file_exists($sourceImagePath)) {
             throw new InvalidArgumentException('File "' . $sourceImagePath . '" does not exist');
         }
@@ -187,7 +207,6 @@ class Image
         $this->sourceImagePath = $sourceImagePath;
         $this->sourceImageWidth = $fileInfo['width'];
         $this->sourceImageHeight = $fileInfo['height'];
-        $this->keepSourceImageAspectRatio = (bool) $keepAspectRatio;
         
         return $this;
     }

@@ -197,7 +197,7 @@ class ImageTest
         
         $image = new Image($adapterMock);
         $image->sourceImage($sourceImagePath)
-              ->resize(400, 400, false)
+              ->pad(400, 400)
               ->save($targetPath, $newName);
     }
     
@@ -218,8 +218,8 @@ class ImageTest
                     ->once();
         
         $image = new Image($adapterMock);
-        $image->sourceImage($sourceImagePath, false)
-              ->resize(400, 400, false)
+        $image->sourceImage($sourceImagePath)
+              ->adaptiveResize(400, 400)
               ->save($targetPath, $newName);
     }
     
@@ -237,8 +237,8 @@ class ImageTest
                     ->once();
         
         $image = new Image($adapterMock);
-        $image->sourceImage($sourceImagePath, false)
-              ->backgroundColor(200, 200, 200)
+        $image->sourceImage($sourceImagePath)
+              ->pad(100, 100, array(200, 200, 200))
               ->save($targetPath, $newName);
     }
     
@@ -256,8 +256,8 @@ class ImageTest
                     ->once();
         
         $image = new Image($adapterMock);
-        $image->sourceImage($sourceImagePath, false)
-              ->backgroundColor(125, 250, 75)
+        $image->sourceImage($sourceImagePath)
+              ->pad(100, 100, array(125, 250, 75))
               ->save($targetPath, $newName);
     }
     
@@ -279,7 +279,7 @@ class ImageTest
                     ->twice();
         
         $image = new Image($adapterMock);
-        $image->sourceImage($sourceImagePath, false)
+        $image->sourceImage($sourceImagePath)
               ->addWatermark($watermarkPath, 100, 100, 62)
               ->addWatermark($watermarkPath, 100, 100, 62)
               ->save($targetPath, $newName);
@@ -298,7 +298,7 @@ class ImageTest
                     ->once();
         
         $image = new Image($adapterMock);
-        $image->sourceImage($sourceImagePath, false)
+        $image->sourceImage($sourceImagePath)
               ->addWatermark($watermarkPath, 100, 100)
               ->clearWatermarks()
               ->save($targetPath, $newName);
