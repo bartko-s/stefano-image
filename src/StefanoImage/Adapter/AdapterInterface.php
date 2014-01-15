@@ -29,16 +29,6 @@ interface AdapterInterface
      * @return self
      */
     public function backgroundColor($red, $green, $blue);
-            
-    /**
-     * @param string $imagePath
-     * @param int $x
-     * @param int $y
-     * @param int $width
-     * @param int $height
-     * @return self
-     */
-    public function drawImage($imagePath, $x, $y, $width, $height);
     
     /**
      * @param string $imagePath
@@ -49,7 +39,7 @@ interface AdapterInterface
      * @param int $opacity from 1 to 100
      * @return self
      */
-    public function drawWatermark($imagePath, $x, $y, $width, $height, $opacity = 30);
+    public function drawImage($imagePath, $x, $y, $width, $height, $opacity);
     
     /**
      * @param string $path

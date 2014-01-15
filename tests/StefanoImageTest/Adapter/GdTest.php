@@ -91,7 +91,7 @@ class GdTest
         $this->setExpectedException('\StefanoImage\Exception\InvalidArgumentException',
                 'File "' . $imagePath . '" does not exist');
         
-        $adapter->drawImage($imagePath, 0, 0, 5, 5);
+        $adapter->drawImage($imagePath, 0, 0, 5, 5, 100);
     }
     
     public function testThrowExceptionIfTryDrawImageAndGivenFileIsNotImage() {
@@ -102,7 +102,7 @@ class GdTest
         $this->setExpectedException('\StefanoImage\Exception\InvalidArgumentException',
                 'Given file "' . $imagePath . '" is not image file');
         
-        $adapter->drawImage($imagePath, 0, 0, 5, 5);
+        $adapter->drawImage($imagePath, 0, 0, 5, 5, 100);
     }
     
     public function testThrowExceptionIfTryDrawImageWithUnsuportedMimeType() {
@@ -113,7 +113,7 @@ class GdTest
         $this->setExpectedException('\StefanoImage\Exception\InvalidArgumentException',
                 'Given file "' . $imagePath . '" has unsupported mime type');
         
-        $adapter->drawImage($imagePath, 0, 0, 5, 5);
+        $adapter->drawImage($imagePath, 0, 0, 5, 5, 100);
     }
     
     public function drawImageFromSupportedImageFileProvider() {
@@ -127,23 +127,13 @@ class GdTest
     /**
      * @dataProvider drawImageFromSupportedImageFileProvider
      */
-    public function testDrawImageFromSupportedImageFile($file) {
+    public function testDrawImageFromSupportedImage($file) {
         //test only if code is called without errors
         $adapter = new GdAdapter();
         $adapter->createCanvas(10, 10)
-                ->drawImage($file, 0, 0, 5, 5);        
-    }
-    
-    /**
-     * @dataProvider drawImageFromSupportedImageFileProvider
-     */
-    public function testDrawWatermarkFromSupportedImage($file) {
-        //test only if code is called without errors
-        $adapter = new GdAdapter();
-        $adapter->createCanvas(10, 10)
-                ->drawWatermark($file, 0, 0, 5, 5, 50)
-                ->drawWatermark($file, 0, 0, 5, 5, -125) //wrong opacity
-                ->drawWatermark($file, 0, 0, 5, 5, 1256); //wrong opacity        
+                ->drawImage($file, 0, 0, 5, 5, 50)
+                ->drawImage($file, 0, 0, 5, 5, -125) //wrong opacity
+                ->drawImage($file, 0, 0, 5, 5, 1256); //wrong opacity
     }
     
     public function testChangeBackgroundColor() {

@@ -42,26 +42,7 @@ class Gd
         return $this;
     }
     
-    public function drawImage($imagePath, $x, $y, $width, $height) {
-        $this->drawImageOnCanvas($imagePath, $x, $y, $width, $height, 100);
-        return $this;
-    }
-    
-    public function drawWatermark($imagePath, $x, $y, $width, $height, $opacity = 30) {
-        $this->drawImageOnCanvas($imagePath, $x, $y, $width, $height, $opacity);
-        return $this;
-    }
-    
-    /**
-     * @param string $imagePath
-     * @param int $x
-     * @param int $y
-     * @param int $width
-     * @param int $height
-     * @param int $opacity from 1 to 100
-     * @return \StefanoImage\Adapter\Gd
-     */
-    private function drawImageOnCanvas($imagePath, $x, $y, $width, $height, $opacity) {
+    public function drawImage($imagePath, $x, $y, $width, $height, $opacity) {
         $sourceImage = $this->createImageResourceFromGivenFile($imagePath);
         
         $opacity = (int) $opacity;

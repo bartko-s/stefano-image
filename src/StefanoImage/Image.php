@@ -138,7 +138,8 @@ class Image
                 $imagePositionCalculator->getCalculatedXPosition(), 
                 $imagePositionCalculator->getCalculatedYPosition(), 
                 $imagePositionCalculator->getCalculatedWidth(), 
-                $imagePositionCalculator->getCalculatedHeight());
+                $imagePositionCalculator->getCalculatedHeight(),
+                100);
         
         $watermarks = $this->getWatermarks();
         foreach($watermarks as $watermark) {
@@ -151,7 +152,7 @@ class Image
                     $inputWatermarkResolution['width'],
                     $inputWatermarkResolution['height'], 
                     $watermark['position']);
-            $adapter->drawWatermark($watermark['imagePath'], 
+            $adapter->drawImage($watermark['imagePath'],
                     $watermarkPositionCalculator->getCalculatedXPosition(),
                     $watermarkPositionCalculator->getCalculatedYPosition(),
                     $watermarkPositionCalculator->getCalculatedWidth(),

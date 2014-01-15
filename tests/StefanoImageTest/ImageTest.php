@@ -205,7 +205,7 @@ class ImageTest
                     ->andReturn($adapterMock)
                     ->once();        
         $adapterMock->shouldReceive('drawImage')
-                    ->with($sourceImagePath, 0, 0, 400, 200)
+                    ->with($sourceImagePath, 0, 0, 400, 200, 100)
                     ->andReturn($adapterMock)
                     ->once();
         
@@ -227,7 +227,7 @@ class ImageTest
                     ->andReturn($adapterMock)
                     ->once();        
         $adapterMock->shouldReceive('drawImage')
-                    ->with($sourceImagePath, 0, 100, 400, 200)
+                    ->with($sourceImagePath, 0, 100, 400, 200, 100)
                     ->andReturn($adapterMock)
                     ->once();
         
@@ -249,7 +249,7 @@ class ImageTest
                     ->andReturn($adapterMock)
                     ->once();        
         $adapterMock->shouldReceive('drawImage')
-                    ->with($sourceImagePath, 0, 0, 400, 400)
+                    ->with($sourceImagePath, 0, 0, 400, 400, 100)
                     ->andReturn($adapterMock)
                     ->once();
         
@@ -304,8 +304,12 @@ class ImageTest
         $newName = 'new-image-name';
         
         $adapterMock = \Mockery::mock('\StefanoImage\Adapter\AdapterInterface');
-        $adapterMock->shouldIgnoreMissing();        
-        $adapterMock->shouldReceive('drawWatermark')
+        $adapterMock->shouldIgnoreMissing();
+        $adapterMock->shouldReceive('drawImage')
+                    ->with($sourceImagePath, 0, 0, 1000, 500, 100)
+                    ->andReturn($adapterMock)
+                    ->once();
+        $adapterMock->shouldReceive('drawImage')
                     ->with($watermarkPath, 450, 240, 100, 20, 62)
                     ->andReturn($adapterMock)
                     ->twice();
@@ -325,9 +329,9 @@ class ImageTest
         
         $adapterMock = \Mockery::mock('\StefanoImage\Adapter\AdapterInterface');
         $adapterMock->shouldIgnoreMissing();        
-        $adapterMock->shouldReceive('drawWatermark')
+        $adapterMock->shouldReceive('drawImage')
                     ->andReturn($adapterMock)
-                    ->never();
+                    ->once();
         
         $image = new Image($adapterMock);
         $image->sourceImage($sourceImagePath, false)
