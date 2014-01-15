@@ -32,7 +32,7 @@ class Image
     private $watermarks = array();
     
     /**
-     * @param ImageAdapterInterface $adapter
+     * @param \StefanoImage\Adapter\AdapterInterface $adapter
      */
     public function __construct(ImageAdapterInterface $adapter = null) {
         if(null != $adapter) {
