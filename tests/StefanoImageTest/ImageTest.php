@@ -157,43 +157,7 @@ class ImageTest
               ->save($targetPath, $newName);
     }
     
-    public function testChangeOutputResolutionAndAdaptCanvasToTheImage() {
-        $sourceImagePath = __DIR__ . '/assets/source.jpg';
-        $targetPath = '/target';
-        $newName = 'new-image-name';
-        
-        $adapterMock = \Mockery::mock('\StefanoImage\Adapter\AdapterInterface');
-        $adapterMock->shouldIgnoreMissing();        
-        $adapterMock->shouldReceive('createCanvas')
-                    ->with(400, 200)
-                    ->andReturn($adapterMock)
-                    ->once();        
-        
-        $image = new Image($adapterMock);
-        $image->sourceImage($sourceImagePath)
-              ->resize(400, 400)
-              ->save($targetPath, $newName);
-    }
-    
-    public function testChangeOutputResolutionAndDontAdaptCanvasToTheImage() {
-        $sourceImagePath = __DIR__ . '/assets/source.jpg';
-        $targetPath = '/target';
-        $newName = 'new-image-name';
-        
-        $adapterMock = \Mockery::mock('\StefanoImage\Adapter\AdapterInterface');
-        $adapterMock->shouldIgnoreMissing();        
-        $adapterMock->shouldReceive('createCanvas')
-                    ->with(400, 400)
-                    ->andReturn($adapterMock)
-                    ->once();        
-        
-        $image = new Image($adapterMock);
-        $image->sourceImage($sourceImagePath)
-              ->resize(400, 400, false)
-              ->save($targetPath, $newName);
-    }
-    
-    public function testChangeOutputResolutionAdaptCanvasToTheImageKeepAspectRatio() {
+    public function testResize() {
         $sourceImagePath = __DIR__ . '/assets/source.jpg';
         $targetPath = '/target';
         $newName = 'new-image-name';
@@ -214,8 +178,8 @@ class ImageTest
               ->resize(400, 400)
               ->save($targetPath, $newName);
     }
-    
-    public function testChangeOutputResolutionDontAdaptCanvasToTheImageKeepAspectRatio() {
+
+    public function testPad() {
         $sourceImagePath = __DIR__ . '/assets/source.jpg';
         $targetPath = '/target';
         $newName = 'new-image-name';
@@ -237,7 +201,7 @@ class ImageTest
               ->save($targetPath, $newName);
     }
     
-    public function testChangeOutputResolutionDontAdaptCanvasToTheImageDontKeepAspectRatio() {
+    public function testAdaptiveResize() {
         $sourceImagePath = __DIR__ . '/assets/source.jpg';
         $targetPath = '/target';
         $newName = 'new-image-name';
