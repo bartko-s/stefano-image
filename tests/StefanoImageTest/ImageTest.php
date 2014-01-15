@@ -2,6 +2,7 @@
 namespace StefanoImageTest;
 
 use StefanoImage\Image;
+use StefanoImage\Adapter\Gd as  GdAdapter;
 
 class ImageTest
     extends \PHPUnit_Framework_TestCase
@@ -54,8 +55,8 @@ class ImageTest
         $targetPath = '/target';
         $newName = 'new-image-name';
         
-        $adapterMock = \Mockery::mock('\StefanoImage\Adapter\AdapterInterface');
-        $adapterMock->shouldIgnoreMissing();        
+        $adapterMock = \Mockery::mock('\StefanoImage\Adapter\Gd');
+        $adapterMock->makePartial();
         $adapterMock->shouldReceive('saveAsJpeg')
                     ->with($targetPath, $newName, 75)
                     ->andReturn($adapterMock)
@@ -71,8 +72,8 @@ class ImageTest
         $targetPath = '/target';
         $newName = 'new-image-name';
         
-        $adapterMock = \Mockery::mock('\StefanoImage\Adapter\AdapterInterface');
-        $adapterMock->shouldIgnoreMissing();        
+        $adapterMock = \Mockery::mock('\StefanoImage\Adapter\Gd');
+        $adapterMock->makePartial();
         $adapterMock->shouldReceive('saveAsPng')
                     ->with($targetPath, $newName, 75)
                     ->andReturn($adapterMock)
@@ -89,8 +90,8 @@ class ImageTest
         $targetPath = '/target';
         $newName = 'new-image-name';
         
-        $adapterMock = \Mockery::mock('\StefanoImage\Adapter\AdapterInterface');
-        $adapterMock->shouldIgnoreMissing();        
+        $adapterMock = \Mockery::mock('\StefanoImage\Adapter\Gd');
+        $adapterMock->makePartial();
         $adapterMock->shouldReceive('saveAsGif')
                     ->with($targetPath, $newName)
                     ->andReturn($adapterMock)
@@ -108,8 +109,8 @@ class ImageTest
         $newName = 'new-image-name';
         $outputKvality = 17;
         
-        $adapterMock = \Mockery::mock('\StefanoImage\Adapter\AdapterInterface');
-        $adapterMock->shouldIgnoreMissing();        
+        $adapterMock = \Mockery::mock('\StefanoImage\Adapter\Gd');
+        $adapterMock->makePartial();
         $adapterMock->shouldReceive('saveAsJpeg')
                     ->with($targetPath, $newName, $outputKvality)
                     ->andReturn($adapterMock)
@@ -126,8 +127,8 @@ class ImageTest
         $targetPath = '/target';
         $newName = 'new-image-name';
         
-        $adapterMock = \Mockery::mock('\StefanoImage\Adapter\AdapterInterface');
-        $adapterMock->shouldIgnoreMissing();        
+        $adapterMock = \Mockery::mock('\StefanoImage\Adapter\Gd');
+        $adapterMock->makePartial();
         $adapterMock->shouldReceive('saveAsJpeg')
                     ->with($targetPath, $newName, 1)
                     ->andReturn($adapterMock)
@@ -144,8 +145,8 @@ class ImageTest
         $targetPath = '/target';
         $newName = 'new-image-name';
         
-        $adapterMock = \Mockery::mock('\StefanoImage\Adapter\AdapterInterface');
-        $adapterMock->shouldIgnoreMissing();        
+        $adapterMock = \Mockery::mock('\StefanoImage\Adapter\Gd');
+        $adapterMock->makePartial();
         $adapterMock->shouldReceive('saveAsJpeg')
                     ->with($targetPath, $newName, 100)
                     ->andReturn($adapterMock)
@@ -162,8 +163,11 @@ class ImageTest
         $targetPath = '/target';
         $newName = 'new-image-name';
         
-        $adapterMock = \Mockery::mock('\StefanoImage\Adapter\AdapterInterface');
-        $adapterMock->shouldIgnoreMissing();        
+        $adapter = new GdAdapter();
+        $adapter->createCanvas(400, 200);
+
+        $adapterMock = \Mockery::mock($adapter);
+        $adapterMock->makePartial();
         $adapterMock->shouldReceive('createCanvas')
                     ->with(400, 200)
                     ->andReturn($adapterMock)
@@ -172,6 +176,7 @@ class ImageTest
                     ->with($sourceImagePath, 0, 0, 400, 200, 100)
                     ->andReturn($adapterMock)
                     ->once();
+        $adapterMock->shouldReceive('saveAsJpeg');
         
         $image = new Image($adapterMock);
         $image->sourceImage($sourceImagePath)
@@ -184,8 +189,11 @@ class ImageTest
         $targetPath = '/target';
         $newName = 'new-image-name';
         
-        $adapterMock = \Mockery::mock('\StefanoImage\Adapter\AdapterInterface');
-        $adapterMock->shouldIgnoreMissing();        
+        $adapter = new GdAdapter();
+        $adapter->createCanvas(400, 400);
+
+        $adapterMock = \Mockery::mock($adapter);
+        $adapterMock->makePartial();
         $adapterMock->shouldReceive('createCanvas')
                     ->with(400, 400)
                     ->andReturn($adapterMock)
@@ -194,6 +202,7 @@ class ImageTest
                     ->with($sourceImagePath, 0, 100, 400, 200, 100)
                     ->andReturn($adapterMock)
                     ->once();
+        $adapterMock->shouldReceive('saveAsJpeg');
         
         $image = new Image($adapterMock);
         $image->sourceImage($sourceImagePath)
@@ -205,9 +214,12 @@ class ImageTest
         $sourceImagePath = __DIR__ . '/assets/source.jpg';
         $targetPath = '/target';
         $newName = 'new-image-name';
-        
-        $adapterMock = \Mockery::mock('\StefanoImage\Adapter\AdapterInterface');
-        $adapterMock->shouldIgnoreMissing();        
+
+        $adapter = new GdAdapter();
+        $adapter->createCanvas(400, 400);
+
+        $adapterMock = \Mockery::mock($adapter);
+        $adapterMock->makePartial();
         $adapterMock->shouldReceive('createCanvas')
                     ->with(400, 400)
                     ->andReturn($adapterMock)
@@ -216,6 +228,7 @@ class ImageTest
                     ->with($sourceImagePath, 0, 0, 400, 400, 100)
                     ->andReturn($adapterMock)
                     ->once();
+        $adapterMock->shouldReceive('saveAsJpeg');
         
         $image = new Image($adapterMock);
         $image->sourceImage($sourceImagePath)
@@ -228,13 +241,14 @@ class ImageTest
         $targetPath = '/target';
         $newName = 'new-image-name';
         
-        $adapterMock = \Mockery::mock('\StefanoImage\Adapter\AdapterInterface');
-        $adapterMock->shouldIgnoreMissing();        
+        $adapterMock = \Mockery::mock('\StefanoImage\Adapter\Gd');
+        $adapterMock->makePartial();
         $adapterMock->shouldReceive('backgroundColor')
                     ->with(200, 200, 200)
                     ->andReturn($adapterMock)
                     ->ordered()
                     ->once();
+        $adapterMock->shouldReceive('saveAsJpeg');
         
         $image = new Image($adapterMock);
         $image->sourceImage($sourceImagePath)
@@ -247,13 +261,14 @@ class ImageTest
         $targetPath = '/target';
         $newName = 'new-image-name';
         
-        $adapterMock = \Mockery::mock('\StefanoImage\Adapter\AdapterInterface');
-        $adapterMock->shouldIgnoreMissing();        
+        $adapterMock = \Mockery::mock('\StefanoImage\Adapter\Gd');
+        $adapterMock->makePartial();
         $adapterMock->shouldReceive('backgroundColor')
                     ->with(125, 250, 75)
                     ->andReturn($adapterMock)
                     ->ordered()
                     ->once();
+        $adapterMock->shouldReceive('saveAsJpeg');
         
         $image = new Image($adapterMock);
         $image->sourceImage($sourceImagePath)
@@ -267,8 +282,8 @@ class ImageTest
         $targetPath = '/target';
         $newName = 'new-image-name';
         
-        $adapterMock = \Mockery::mock('\StefanoImage\Adapter\AdapterInterface');
-        $adapterMock->shouldIgnoreMissing();
+        $adapterMock = \Mockery::mock('\StefanoImage\Adapter\Gd');
+        $adapterMock->makePartial();
         $adapterMock->shouldReceive('drawImage')
                     ->with($sourceImagePath, 0, 0, 1000, 500, 100)
                     ->andReturn($adapterMock)
@@ -277,6 +292,7 @@ class ImageTest
                     ->with($watermarkPath, 450, 240, 100, 20, 62)
                     ->andReturn($adapterMock)
                     ->twice();
+        $adapterMock->shouldReceive('saveAsJpeg');
         
         $image = new Image($adapterMock);
         $image->sourceImage($sourceImagePath)
@@ -291,11 +307,12 @@ class ImageTest
         $targetPath = '/target';
         $newName = 'new-image-name';
         
-        $adapterMock = \Mockery::mock('\StefanoImage\Adapter\AdapterInterface');
-        $adapterMock->shouldIgnoreMissing();        
+        $adapterMock = \Mockery::mock('\StefanoImage\Adapter\Gd');
+        $adapterMock->makePartial();
         $adapterMock->shouldReceive('drawImage')
                     ->andReturn($adapterMock)
                     ->once();
+        $adapterMock->shouldReceive('saveAsJpeg');
         
         $image = new Image($adapterMock);
         $image->sourceImage($sourceImagePath)

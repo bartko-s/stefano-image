@@ -16,23 +16,22 @@ class Image
     private $adapter;
     
     private $sourceImagePath;
-    private $keepSourceImageAspectRatio = true;
-    private $sourceImageWidth = 0;
-    private $sourceImageHeight = 0;
     private $outputFormat = self::OUTPUT_FORMAT_JPEG;
     private $quality = 75;
-    private $outputMaxWidth;
-    private $outputMaxHeight;
-    private $adaptOutputResolution = true;
     private $bacgroundColor = array(
         'red' => 200,
         'green' => 200,
         'blue' => 200,
     );
     private $watermarks = array();
+
+    private $maxOutputWidth;
+    private $maxOutputHeight;
+    private $keepSourceImageAspectRatio = true;
+    private $adaptOutputResolution = true;
     
     /**
-     * @param \StefanoImage\Adapter\AdapterInterface $adapter
+     * @param ImageAdapterInterface $adapter
      */
     public function __construct(ImageAdapterInterface $adapter = null) {
         if(null != $adapter) {
@@ -98,16 +97,18 @@ class Image
     }
 
     public function resize($maxWidth = null, $maxHeight = null) {
-        $this->outputMaxWidth = (int) $maxWidth;
-        $this->outputMaxHeight = (int) $maxHeight;
+        $this->maxOutputWidth = (int) $maxWidth;
+        $this->maxOutputHeight = (int) $maxHeight;
         $this->adaptOutputResolution = true;
-        
+
+        $this->keepSourceImageAspectRatio = true;
+
         return $this;
     }
 
     public function adaptiveResize($width, $height) {
-        $this->outputMaxWidth = (int) $width;
-        $this->outputMaxHeight = (int) $height;
+        $this->maxOutputWidth = (int) $width;
+        $this->maxOutputHeight = (int) $height;
         $this->adaptOutputResolution = false;
 
         $this->keepSourceImageAspectRatio = false;
@@ -116,9 +117,11 @@ class Image
     }
 
     public function pad($width, $height, $color = array(200, 200, 200)) {
-        $this->outputMaxWidth = (int) $width;
-        $this->outputMaxHeight = (int) $height;
+        $this->maxOutputWidth = (int) $width;
+        $this->maxOutputHeight = (int) $height;
         $this->adaptOutputResolution = false;
+
+        $this->keepSourceImageAspectRatio = true;
 
         $this->backgroundColor($color[0], $color[1], $color[2]);
 
@@ -133,23 +136,26 @@ class Image
         }
         
         $adapter = $this->getAdapter();
-        
+
+        //calculate and create canvas
         $canvasSizeCalculator = new CanvasSizeCalculator(
                 $this->getSourceImageWidth(), 
                 $this->getSourceImageHeight(), 
-                $this->getOutputMaxWidth(), 
-                $this->getOutputMaxHeight());
+                $this->getMaxOutputWidth(),
+                $this->getMaxOutputHeight());
         $canvasSizeCalculator->keepAspectRatio($this->getAdaptOutputResolution());
         $adapter->createCanvas(
                 $canvasSizeCalculator->getCalculatedCanvasWidth(), 
                 $canvasSizeCalculator->getCalculatedCanvasHeight());
-        
+
+        //set background color
         $bgColor = $this->getBackgroudnColor();
         $adapter->backgroundColor($bgColor['red'], $bgColor['green'], $bgColor['blue']);
         
+        //draw image
         $imagePositionCalculator = new ImagePositionCalculator(
-                $canvasSizeCalculator->getCalculatedCanvasWidth(),
-                $canvasSizeCalculator->getCalculatedCanvasHeight(), 
+                $adapter->getCanvasWidth(),
+                $adapter->getCanvasHeight(),
                 $this->getSourceImageWidth(), 
                 $this->getSourceImageHeight());
         $imagePositionCalculator->keepAspectRatio($this->getKeepSourceImageAspectRatio());
@@ -160,7 +166,8 @@ class Image
                 $imagePositionCalculator->getCalculatedWidth(), 
                 $imagePositionCalculator->getCalculatedHeight(),
                 100);
-        
+
+        //draw watermarks
         $watermarks = $this->getWatermarks();
         foreach($watermarks as $watermark) {
             $inputWatermarkResolution = $this->getImageInfo($watermark['imagePath']);
@@ -179,7 +186,8 @@ class Image
                     $watermarkPositionCalculator->getCalculatedHeight(),
                     $watermark['opacity']);
         }
-        
+
+        //save
         $outputFormat = $this->getOutputFormat();
         if(self::OUTPUT_FORMAT_GIF == $outputFormat) {
             $adapter->saveAsGif($destination, $name);
@@ -205,8 +213,6 @@ class Image
         }
         
         $this->sourceImagePath = $sourceImagePath;
-        $this->sourceImageWidth = $fileInfo['width'];
-        $this->sourceImageHeight = $fileInfo['height'];
         
         return $this;
     }
@@ -243,14 +249,16 @@ class Image
      * @return int
      */
     private function getSourceImageWidth(){
-        return $this->sourceImageWidth;
+        $fileInfo = getimagesize($this->getSourceImagePath());
+        return $fileInfo[0];
     }
     
     /**
      * @return int
      */
     private function getSourceImageHeight(){
-        return $this->sourceImageHeight;
+        $fileInfo = getimagesize($this->getSourceImagePath());
+        return $fileInfo[1];
     }
     
     /**
@@ -288,15 +296,15 @@ class Image
     /**
      * @return int|null
      */
-    private function getOutputMaxWidth() {
-        return $this->outputMaxWidth;
+    private function getMaxOutputWidth() {
+        return $this->maxOutputWidth;
     }
     
     /**
      * @return int|null
      */
-    private function getOutputMaxHeight() {
-        return $this->outputMaxHeight;
+    private function getMaxOutputHeight() {
+        return $this->maxOutputHeight;
     }
     
     /**
