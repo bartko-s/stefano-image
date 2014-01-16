@@ -142,8 +142,8 @@ class Image
                 $this->getSourceImageWidth(), 
                 $this->getSourceImageHeight(), 
                 $this->getMaxOutputWidth(),
-                $this->getMaxOutputHeight());
-        $canvasSizeCalculator->keepAspectRatio($this->getAdaptOutputResolution());
+                $this->getMaxOutputHeight(),
+                $this->getAdaptOutputResolution());
         $adapter->createCanvas(
                 $canvasSizeCalculator->getCalculatedCanvasWidth(), 
                 $canvasSizeCalculator->getCalculatedCanvasHeight());
