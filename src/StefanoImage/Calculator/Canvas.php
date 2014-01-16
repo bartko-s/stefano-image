@@ -21,7 +21,7 @@ class Canvas
      * @param int $inputImageHeight
      * @param int $maxOutputImageWidth null is unlimited
      * @param int $maxOutputImageHeight null is unlimited
-     * @param bool $adaptOutputResolution Adapt output resolution source image
+     * @param bool $adaptOutputResolution Adapt output resolution to the source image
      */
     public function __construct($inputImageWidth, $inputImageHeight, 
             $maxOutputImageWidth, $maxOutputImageHeight,
