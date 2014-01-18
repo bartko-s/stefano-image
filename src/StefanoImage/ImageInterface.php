@@ -62,13 +62,13 @@ interface ImageInterface
     
     /**
      * @param string $imagePath
-     * @param int $maxWidth
-     * @param int $maxHeight
+     * @param int $maxWidthPercent 1 - 100
+     * @param int $maxHeightPercent 1 - 100
      * @param int $opacity from 1 to 100
      * @param string $position ImageInterface::WATERMARK_POSITION_XXX
      * @return self
      */
-    public function addWatermark($imagePath, $maxWidth, $maxHeight, 
+    public function addWatermark($imagePath, $maxWidthPercent, $maxHeightPercent,
             $opacity = 30, $position = ImageInterface::WATERMARK_POSITION_CENTER);
     
     /**

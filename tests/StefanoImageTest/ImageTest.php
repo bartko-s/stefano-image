@@ -281,7 +281,7 @@ class ImageTest
         $watermarkPath = __DIR__ . '/assets/watermark.gif';
         $targetPath = '/target';
         $newName = 'new-image-name';
-        
+
         $adapterMock = \Mockery::mock('\StefanoImage\Adapter\Gd');
         $adapterMock->makePartial();
         $adapterMock->shouldReceive('drawImage')
@@ -289,11 +289,11 @@ class ImageTest
                     ->andReturn($adapterMock)
                     ->once();
         $adapterMock->shouldReceive('drawImage')
-                    ->with($watermarkPath, 450, 240, 100, 20, 62)
+                    ->with($watermarkPath, 100, 170, 800, 160, 62)
                     ->andReturn($adapterMock)
                     ->twice();
         $adapterMock->shouldReceive('saveAsJpeg');
-        
+
         $image = new Image($adapterMock);
         $image->sourceImage($sourceImagePath)
               ->addWatermark($watermarkPath, 100, 100, 62)

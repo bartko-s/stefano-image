@@ -39,12 +39,12 @@ class Image
         }
     }
     
-    public function addWatermark($imagePath, $maxWidth, $maxHeight, 
+    public function addWatermark($imagePath, $maxWidthPercent, $maxHeightPercent,
             $opacity = 30, $position = ImageInterface::WATERMARK_POSITION_CENTER) {
         $this->watermarks[] = array(
             'imagePath' => $imagePath,
-            'maxWidth' => $maxWidth,
-            'maxHeight' => $maxHeight,
+            'maxWidthPercent' => $maxWidthPercent,
+            'maxHeightPercent' => $maxHeightPercent,
             'opacity' => $opacity,
             'position' => $position,
         );
@@ -175,7 +175,7 @@ class Image
             $watermarkPositionCalculator = new WatermarkPositionCalculator(
                     $canvasSizeCalculator->getCalculatedCanvasWidth(),
                     $canvasSizeCalculator->getCalculatedCanvasHeight(), 
-                    $watermark['maxWidth'], $watermark['maxHeight'], 
+                    $watermark['maxWidthPercent'], $watermark['maxHeightPercent'],
                     $inputWatermarkResolution['width'],
                     $inputWatermarkResolution['height'], 
                     $watermark['position']);
