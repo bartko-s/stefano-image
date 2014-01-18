@@ -279,7 +279,7 @@ class WatermarkPosition
     }
 
     /**
-     * @param int $marginPercent
+     * @param int $marginPercent 1 - 40
      * @return this
      */
     private function setMarginPercent($marginPercent) {
