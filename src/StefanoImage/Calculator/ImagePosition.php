@@ -20,12 +20,15 @@ class ImagePosition
      * @param int $canvasHeight
      * @param int $imageWidth
      * @param int $imageHeight
+     * @param bool $keepAspectRatio
      */
-    public function __construct($canvasWidth, $canvasHeight, $imageWidth, $imageHeight) {
+    public function __construct($canvasWidth, $canvasHeight, $imageWidth,
+            $imageHeight, $keepAspectRatio) {
         $this->canvasWidth = abs(round($canvasWidth));
         $this->canvasHeight = abs(round($canvasHeight));
         $this->imageWidth = abs(round($imageWidth));
         $this->imageHeight = abs(round($imageHeight));
+        $this->keepAspectRatio = (bool) $keepAspectRatio;
     }
     
     /**
@@ -57,15 +60,6 @@ class ImagePosition
     }
     
     /**
-     * @param boolean $keepAspectRatio
-     * @return \StefanoImage\Calculator\ImagePosition
-     */
-    public function keepAspectRatio($keepAspectRatio) {
-        $this->keepAspectRatio = (bool) $keepAspectRatio;
-        return $this;
-    }
-    
-    /**
      * @return boolean
      */
     private function getKeepAspectRatio() {
@@ -83,7 +77,7 @@ class ImagePosition
             $r2 = $this->getCanvasHeight() / $this->getImageHeight();
             
             if($r1 > $r2) {
-                return round(($this->getCanvasWidth() / 2) - ($this->getCalculatedWidth() / 2));
+                return ceil(($this->getCanvasWidth() / 2) - ($this->getCalculatedWidth() / 2));
             } else {
                 return 0;
             }
@@ -103,7 +97,7 @@ class ImagePosition
             if($r1 > $r2) {
                 return 0;
             } else {
-                return round(($this->getCanvasHeight() / 2) - ($this->getCalculatedHeight() / 2));
+                return ceil(($this->getCanvasHeight() / 2) - ($this->getCalculatedHeight() / 2));
             }
         }
     }
@@ -120,7 +114,7 @@ class ImagePosition
             
             if($r1 > $r2) {
                 $ratio = $this->getImageHeight() / $this->getCanvasHeight();
-                return round($this->getImageWidth() / $ratio);
+                return ceil($this->getImageWidth() / $ratio);
             } else {
                 return $this->getCanvasWidth();
             }
@@ -141,7 +135,7 @@ class ImagePosition
                 return $this->getCanvasHeight();
             } else {
                 $ratio = $this->getImageWidth() / $this->getCanvasWidth();
-                return round($this->getImageHeight() / $ratio);
+                return ceil($this->getImageHeight() / $ratio);
             }
         }
     }

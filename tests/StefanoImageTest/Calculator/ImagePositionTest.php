@@ -6,47 +6,30 @@ use StefanoImage\Calculator\ImagePosition as ImageCalculator;
 class ImagePositionTest
     extends \PHPUnit_Framework_TestCase
 {
-    public function testDontKeepAspektRatio() {
-       $calculator = new ImageCalculator(150, 250, 300, 300);
-       $calculator->keepAspectRatio(false);
-       
-       $this->assertEquals(0, $calculator->getCalculatedXPosition());
-       $this->assertEquals(0, $calculator->getCalculatedYPosition());
-       $this->assertEquals(150, $calculator->getCalculatedWidth());
-       $this->assertEquals(250, $calculator->getCalculatedHeight());
+    public function dataPrivider() {
+        return array(
+            //dont keep aspect ratio
+            array(80, 160, 100, 300, true, 13, 0, 54, 160),
+            array(80, 160, 300, 150, true, 0, 60, 80, 40),
+
+            //keep aspect ratio
+            array(80, 160, 100, 300, false, 0, 0, 80, 160),
+            array(80, 160, 300, 150, false, 0, 0, 80, 160),
+        );
     }
-    
-    public function testKeepAspektRatioPortraitImage() {
-       $calculator = new ImageCalculator(300, 300, 150, 300);
-       
-       $this->assertEquals(150, $calculator->getCalculatedWidth());
-       $this->assertEquals(300, $calculator->getCalculatedHeight());
-       $this->assertEquals(75, $calculator->getCalculatedXPosition());
-       $this->assertEquals(0, $calculator->getCalculatedYPosition());       
-       
-       //test
-       $calculator2 = new ImageCalculator(300, 300, 450, 750);
-       
-       $this->assertEquals(180, $calculator2->getCalculatedWidth());
-       $this->assertEquals(300, $calculator2->getCalculatedHeight());
-       $this->assertEquals(60, $calculator2->getCalculatedXPosition());
-       $this->assertEquals(0, $calculator2->getCalculatedYPosition());       
-    }
-    
-    public function testKeepAspektRatioLandscapeImage() {
-       $calculator = new ImageCalculator(300, 300, 300, 150);
-       
-       $this->assertEquals(300, $calculator->getCalculatedWidth());
-       $this->assertEquals(150, $calculator->getCalculatedHeight());
-       $this->assertEquals(0, $calculator->getCalculatedXPosition());
-       $this->assertEquals(75, $calculator->getCalculatedYPosition());       
-       
-       //test
-       $calculator2 = new ImageCalculator(300, 300, 750, 450);
-       
-       $this->assertEquals(300, $calculator2->getCalculatedWidth());
-       $this->assertEquals(180, $calculator2->getCalculatedHeight());
-       $this->assertEquals(0, $calculator2->getCalculatedXPosition());
-       $this->assertEquals(60, $calculator2->getCalculatedYPosition());       
+
+    /**
+     * @dataProvider dataPrivider
+     */
+    public function test($canvasWidth, $canvasHeight, $imageWidth, $imageHeight,
+            $keepAspectRatio, $calculatedXPosition, $calculatedYPosition,
+            $calculatedWidth, $calculatedHeight) {
+        $calculator = new ImageCalculator($canvasWidth, $canvasHeight, $imageWidth,
+            $imageHeight, $keepAspectRatio);
+
+       $this->assertEquals($calculatedXPosition, $calculator->getCalculatedXPosition());
+       $this->assertEquals($calculatedYPosition, $calculator->getCalculatedYPosition());
+       $this->assertEquals($calculatedWidth, $calculator->getCalculatedWidth());
+       $this->assertEquals($calculatedHeight, $calculator->getCalculatedHeight());
     }
 }

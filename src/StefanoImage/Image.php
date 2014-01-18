@@ -157,8 +157,8 @@ class Image
                 $adapter->getCanvasWidth(),
                 $adapter->getCanvasHeight(),
                 $this->getSourceImageWidth(), 
-                $this->getSourceImageHeight());
-        $imagePositionCalculator->keepAspectRatio($this->getKeepSourceImageAspectRatio());
+                $this->getSourceImageHeight(),
+                $this->getKeepSourceImageAspectRatio());
         $adapter->drawImage(
                 $sourceImagePath, 
                 $imagePositionCalculator->getCalculatedXPosition(), 
