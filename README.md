@@ -113,3 +113,8 @@ This is output
 $resizer->outputFormat(\StefanoImage\Image::OUTPUT_FORMAT_PNG);
 ```
 
+- change output quality
+
+```
+$resizer->quality(15);
+```
