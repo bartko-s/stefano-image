@@ -22,7 +22,7 @@ Instalation using Composer
 Usage
 -----
 
-This is original image
+This is the original image
 
 <img src="./doc/images/source.jpeg" />
 
@@ -37,7 +37,7 @@ $resizer->sourceImage($sourceImage)
         ->save($outputDir, $name);
 ```
 
-This is output
+This is the output
 
 <img src="./doc/images/resize.jpeg" />
 
@@ -52,7 +52,7 @@ $resizer->sourceImage($sourceImage)
         ->save($outputDir, $name);
 ```
 
-This is output
+This is the output
 
 <img src="./doc/images/adaptive-resize.jpeg" />
 
@@ -67,11 +67,11 @@ $resizer->sourceImage($sourceImage)
         ->save($outputDir, $name);
 ```
 
-This is output
+This is the output
 
 <img src="./doc/images/pad.jpeg" />
 
-- pad and change background image
+- pad and change background color
 
 ```
 $width = 350;
@@ -83,7 +83,7 @@ $resizer->sourceImage($sourceImage)
         ->save($outputDir, $name);
 ```
 
-This is output
+This is the output
 
 <img src="./doc/images/pad-2.jpeg" />
 
@@ -103,7 +103,7 @@ $resizer->sourceImage($sourceImage)
         ->save($outputDir, $name);
 ```
 
-This is output
+This is the output
 
 <img src="./doc/images/watermark.jpeg" />
 
