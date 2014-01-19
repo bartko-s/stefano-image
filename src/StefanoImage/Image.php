@@ -58,7 +58,7 @@ class Image
         return $this;
     }
     
-    private function backgroundColor($red, $green, $blue) {
+    public function backgroundColor($red, $green, $blue) {
         $this->bacgroundColor = array(
             'red' => (int) $red,
             'green' => (int) $green,
@@ -116,14 +116,12 @@ class Image
         return $this;
     }
 
-    public function pad($width, $height, $color = array(200, 200, 200)) {
+    public function pad($width, $height) {
         $this->maxOutputWidth = (int) $width;
         $this->maxOutputHeight = (int) $height;
         $this->adaptOutputResolution = false;
 
         $this->keepSourceImageAspectRatio = true;
-
-        $this->backgroundColor($color[0], $color[1], $color[2]);
 
         return $this;
     }

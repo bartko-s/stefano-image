@@ -76,10 +76,10 @@ This is output
 ```
 $width = 350;
 $height = 150;
-$color = array(35, 210, 240);
 $resizer = new \StefanoImage\Image();
 $resizer->sourceImage($sourceImage)
-        ->pad($width, $height, $color)
+        ->pad($width, $height)
+        ->backgroundColor(35, 210, 240)
         ->save($outputDir, $name);
 ```
 

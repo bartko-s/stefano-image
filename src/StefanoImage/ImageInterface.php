@@ -43,11 +43,18 @@ interface ImageInterface
     /**
      * @param int $width
      * @param int $height
-     * @param array|null $color
      * @return self
      */
-    public function pad($width, $height, $color = array(200, 200, 200));
-        
+    public function pad($width, $height);
+
+     /**
+     * @param int $red
+     * @param int $green
+     * @param int $blue
+     * @return self
+     */
+    public function backgroundColor($red, $green, $blue);
+
     /**
      * @param int $quality form 1 to 100
      * @return self

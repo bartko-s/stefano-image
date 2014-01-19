@@ -252,7 +252,7 @@ class ImageTest
         
         $image = new Image($adapterMock);
         $image->sourceImage($sourceImagePath)
-              ->pad(100, 100, array(200, 200, 200))
+              ->pad(100, 100)
               ->save($targetPath, $newName);
     }
     
@@ -272,7 +272,8 @@ class ImageTest
         
         $image = new Image($adapterMock);
         $image->sourceImage($sourceImagePath)
-              ->pad(100, 100, array(125, 250, 75))
+              ->pad(100, 100)
+              ->backgroundColor(125, 250, 75)
               ->save($targetPath, $newName);
     }
     
