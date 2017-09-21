@@ -1,11 +1,11 @@
 <?php
 namespace StefanoImageTest;
 
+use StefanoImage\Adapter\Gd as GdAdapter;
 use StefanoImage\Image;
-use StefanoImage\Adapter\Gd as  GdAdapter;
 
 class ImageTest
-    extends \PHPUnit_Framework_TestCase
+    extends TestCase
 {
     protected function tearDown() {
         \Mockery::close();
@@ -15,8 +15,8 @@ class ImageTest
         $imagePath = 'neexistuje.jpg';
         $image = new Image();
         
-        $this->setExpectedException('\StefanoImage\Exception\InvalidArgumentException',
-                'File "' . $imagePath . '" does not exist');
+        $this->expectException('\StefanoImage\Exception\InvalidArgumentException');
+        $this->expectExceptionMessage('File "' . $imagePath . '" does not exist');
         
         $image->sourceImage($imagePath);
     }
@@ -25,8 +25,8 @@ class ImageTest
         $imagePath = __DIR__ . '/assets/file';
         $image = new Image();
         
-        $this->setExpectedException('\StefanoImage\Exception\InvalidArgumentException',
-                'File "' . $imagePath . '" is not image file');
+        $this->expectException('\StefanoImage\Exception\InvalidArgumentException');
+        $this->expectExceptionMessage('File "' . $imagePath . '" is not image file');
         
         $image->sourceImage($imagePath);
     }
@@ -34,8 +34,8 @@ class ImageTest
     public function testThrowExceptionIfCallSaveAndSourceImageHasNotBeenSet() {
         $image = new Image();
         
-        $this->setExpectedException('\StefanoImage\Exception\LogicException',
-                'First you must set source image file');
+        $this->expectException('\StefanoImage\Exception\LogicException');
+        $this->expectExceptionMessage('First you must set source image file');
         
         $image->save('dest', 'name');
     }
@@ -44,8 +44,8 @@ class ImageTest
         $outputFormat = 'unsupported-type';
         $image = new Image();
         
-        $this->setExpectedException('\StefanoImage\Exception\InvalidArgumentException',
-                'Required "' . $outputFormat . '" output format is not supported');
+        $this->expectException('\StefanoImage\Exception\InvalidArgumentException');
+        $this->expectExceptionMessage('Required "' . $outputFormat . '" output format is not supported');
         
         $image->outputFormat($outputFormat);
     }
@@ -107,18 +107,18 @@ class ImageTest
         $sourceImagePath = __DIR__ . '/assets/source.jpg';
         $targetPath = '/target';
         $newName = 'new-image-name';
-        $outputKvality = 17;
+        $outputQuality = 17;
         
         $adapterMock = \Mockery::mock('\StefanoImage\Adapter\Gd');
         $adapterMock->makePartial();
         $adapterMock->shouldReceive('saveAsJpeg')
-                    ->with($targetPath, $newName, $outputKvality)
+                    ->with($targetPath, $newName, $outputQuality)
                     ->andReturn($adapterMock)
                     ->once();
         
         $image = new Image($adapterMock);
         $image->sourceImage($sourceImagePath)
-              ->quality($outputKvality)
+              ->quality($outputQuality)
               ->save($targetPath, $newName);
     }
     

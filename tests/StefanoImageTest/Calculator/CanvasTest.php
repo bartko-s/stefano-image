@@ -2,9 +2,10 @@
 namespace StefanoImageTest\Calculator;
 
 use StefanoImage\Calculator\Canvas as CanvasCalculator;
+use StefanoImageTest\TestCase;
 
 class CanvasTest
-    extends \PHPUnit_Framework_TestCase
+    extends TestCase
 {
     public function dataProvider() {
         return array(
