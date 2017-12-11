@@ -1,7 +1,6 @@
 <?php
 namespace StefanoImageTest\Calculator;
 
-use PHPUnit\Framework\TestCase;
 use StefanoImage\Calculator\ImagePosition as ImageCalculator;
 use StefanoImageTest\TestCase;
 

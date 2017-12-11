@@ -5,7 +5,7 @@ use StefanoImage\Calculator\WatermarkPosition as WatermarkPositionCalculator;
 use StefanoImage\ImageInterface;
 use StefanoImageTest\TestCase;
 
-class WatermarkPosition
+class WatermarkPositionTest
     extends TestCase
 {
     public function dataProvider() {
