@@ -1,7 +1,6 @@
 <?php
 namespace StefanoImageTest;
 
-use PHPUnit\Framework\TestCase;
 use StefanoImage\Adapter\Gd as GdAdapter;
 use StefanoImage\Image;
 

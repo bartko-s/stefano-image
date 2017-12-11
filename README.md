@@ -17,7 +17,7 @@ Dependencies
 
 Instalation using Composer
 --------------------------
-1. Add following line to composer.json  ``` "stefano/stefano-image": "*" ```
+1. Run command ``` composer require stefano/stefano-image ```
 
 Usage
 -----

@@ -3,6 +3,7 @@ namespace StefanoImageTest\Calculator;
 
 use PHPUnit\Framework\TestCase;
 use StefanoImage\Calculator\Canvas as CanvasCalculator;
+use StefanoImageTest\TestCase;
 
 class CanvasTest
     extends TestCase

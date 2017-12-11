@@ -1,9 +1,9 @@
 <?php
 namespace StefanoImageTest\Calculator;
 
-use PHPUnit\Framework\TestCase;
-use StefanoImage\ImageInterface;
 use StefanoImage\Calculator\WatermarkPosition as WatermarkPositionCalculator;
+use StefanoImage\ImageInterface;
+use StefanoImageTest\TestCase;
 
 class WatermarkPosition
     extends TestCase

@@ -1,8 +1,8 @@
 <?php
 namespace StefanoImageTest\Adapter;
 
-use PHPUnit\Framework\TestCase;
 use StefanoImage\Adapter\Gd as GdAdapter;
+use StefanoImageTest\TestCase;
 
 class GdTest
     extends TestCase
@@ -84,7 +84,7 @@ class GdTest
         $this->assertEquals(250, $adapter->getCanvasHeight());
     }
     
-    public function testThrowExceptionIfDrawImageDoesNostExist() {
+    public function testThrowExceptionIfDrawImageDoesNotExist() {
         $imagePath = 'neexistuje';
         $adapter = new GdAdapter();
         $adapter->createCanvas(10, 10);
@@ -106,7 +106,7 @@ class GdTest
         $adapter->drawImage($imagePath, 0, 0, 5, 5, 100);
     }
     
-    public function testThrowExceptionIfTryDrawImageWithUnsuportedMimeType() {
+    public function testThrowExceptionIfTryDrawImageWithUnsupportedMimeType() {
         $imagePath = __DIR__ . '/assets/unsupported.ico';
         $adapter = new GdAdapter();
         $adapter->createCanvas(10, 10);

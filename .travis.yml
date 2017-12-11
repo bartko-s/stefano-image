@@ -4,12 +4,13 @@ php:
   - 7.1
   - 7.2
   - nightly
+  - hhvm
 
 before_script:
   - composer self-update
   - composer install --dev
 
-script: phpunit --configuration tests/phpunit.xml --coverage-clover tests/clover.xml
+script: vendor/bin/phpunit --configuration tests/phpunit.xml --coverage-clover tests/clover.xml
 
 after_script:
   - php vendor/bin/coveralls -v
@@ -20,3 +21,4 @@ matrix:
   fast_finish: true
   allow_failures:
     - php: nightly
+    - php: hhvm

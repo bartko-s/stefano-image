@@ -2,7 +2,7 @@
     "name": "stefano/stefano-image",
     "description": "Image processing",
     "version": "0.2.1-dev",
-    "license": "BSD-3-Clause",    
+    "license": "BSD-3-Clause",
     "keywords": [
         "image",
         "resize",
@@ -24,17 +24,24 @@
         "php": ">=7.0.0"
     },
     "require-dev": {
-        "phpunit/PHPUnit": ">=3.7.0",
-        "mockery/mockery": ">=0.8.0",
+        "phpunit/PHPUnit": "^6.0.0",
+        "mockery/mockery": "^0.9.0",
         "satooshi/php-coveralls": "^1.0"
     },
     "autoload": {
         "psr-0": {
-            "StefanoImage\\": "src/",
-            "StefanoImageTest\\": "tests/"
+            "StefanoImage\\": "src/"
         },
         "classmap": [
             "./src/"
         ]
+    },
+    "autoload-dev": {
+        "psr-0": {
+            "StefanoImageTest\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit --configuration tests/phpunit.xml"
     }
 }
