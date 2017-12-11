@@ -2,8 +2,8 @@
 namespace StefanoImageTest;
 
 use PHPUnit\Framework\TestCase;
+use StefanoImage\Adapter\Gd as GdAdapter;
 use StefanoImage\Image;
-use StefanoImage\Adapter\Gd as  GdAdapter;
 
 class ImageTest
     extends TestCase
@@ -53,7 +53,7 @@ class ImageTest
     
     public function testSaveAsDefaultJpegFormat() {
         $sourceImagePath = __DIR__ . '/assets/source.jpg';
-        $targetPath = '/target';
+        $targetPath =  __DIR__ . '/assets/temp';
         $newName = 'new-image-name';
         
         $adapterMock = \Mockery::mock('\StefanoImage\Adapter\Gd');
@@ -70,7 +70,7 @@ class ImageTest
     
     public function testSaveAsPng() {
         $sourceImagePath = __DIR__ . '/assets/source.jpg';
-        $targetPath = '/target';
+        $targetPath = __DIR__ . '/assets/temp';
         $newName = 'new-image-name';
         
         $adapterMock = \Mockery::mock('\StefanoImage\Adapter\Gd');
@@ -88,7 +88,7 @@ class ImageTest
     
     public function testSaveAsGif() {
         $sourceImagePath = __DIR__ . '/assets/source.jpg';
-        $targetPath = '/target';
+        $targetPath = __DIR__ . '/assets/temp';
         $newName = 'new-image-name';
         
         $adapterMock = \Mockery::mock('\StefanoImage\Adapter\Gd');
@@ -106,26 +106,26 @@ class ImageTest
     
     public function testChangeOutputQuality() {
         $sourceImagePath = __DIR__ . '/assets/source.jpg';
-        $targetPath = '/target';
+        $targetPath = __DIR__ . '/assets/temp';
         $newName = 'new-image-name';
-        $outputKvality = 17;
+        $outputQuality = 17;
         
         $adapterMock = \Mockery::mock('\StefanoImage\Adapter\Gd');
         $adapterMock->makePartial();
         $adapterMock->shouldReceive('saveAsJpeg')
-                    ->with($targetPath, $newName, $outputKvality)
+                    ->with($targetPath, $newName, $outputQuality)
                     ->andReturn($adapterMock)
                     ->once();
         
         $image = new Image($adapterMock);
         $image->sourceImage($sourceImagePath)
-              ->quality($outputKvality)
+              ->quality($outputQuality)
               ->save($targetPath, $newName);
     }
     
     public function testChangeOutputQualityWrongValue() {
         $sourceImagePath = __DIR__ . '/assets/source.jpg';
-        $targetPath = '/target';
+        $targetPath = __DIR__ . '/assets/temp';
         $newName = 'new-image-name';
         
         $adapterMock = \Mockery::mock('\StefanoImage\Adapter\Gd');
@@ -143,7 +143,7 @@ class ImageTest
     
     public function testChangeOutputQualityWrongValue2() {
         $sourceImagePath = __DIR__ . '/assets/source.jpg';
-        $targetPath = '/target';
+        $targetPath = __DIR__ . '/assets/temp';
         $newName = 'new-image-name';
         
         $adapterMock = \Mockery::mock('\StefanoImage\Adapter\Gd');
@@ -161,7 +161,7 @@ class ImageTest
     
     public function testResize() {
         $sourceImagePath = __DIR__ . '/assets/source.jpg';
-        $targetPath = '/target';
+        $targetPath = __DIR__ . '/assets/temp';
         $newName = 'new-image-name';
         
         $adapter = new GdAdapter();
@@ -187,7 +187,7 @@ class ImageTest
 
     public function testPad() {
         $sourceImagePath = __DIR__ . '/assets/source.jpg';
-        $targetPath = '/target';
+        $targetPath = __DIR__ . '/assets/temp';
         $newName = 'new-image-name';
         
         $adapter = new GdAdapter();
@@ -213,7 +213,7 @@ class ImageTest
     
     public function testAdaptiveResize() {
         $sourceImagePath = __DIR__ . '/assets/source.jpg';
-        $targetPath = '/target';
+        $targetPath = __DIR__ . '/assets/temp';
         $newName = 'new-image-name';
 
         $adapter = new GdAdapter();
@@ -239,7 +239,7 @@ class ImageTest
     
     public function testDefaultBackgroundColor() {
         $sourceImagePath = __DIR__ . '/assets/source.jpg';
-        $targetPath = '/target';
+        $targetPath = __DIR__ . '/assets/temp';
         $newName = 'new-image-name';
         
         $adapterMock = \Mockery::mock('\StefanoImage\Adapter\Gd');
@@ -259,7 +259,7 @@ class ImageTest
     
     public function testChangeBackgroundColor() {
         $sourceImagePath = __DIR__ . '/assets/source.jpg';
-        $targetPath = '/target';
+        $targetPath = __DIR__ . '/assets/temp';
         $newName = 'new-image-name';
         
         $adapterMock = \Mockery::mock('\StefanoImage\Adapter\Gd');
@@ -281,7 +281,7 @@ class ImageTest
     public function testAddWatermarksCenterDefaultPosition() {
         $sourceImagePath = __DIR__ . '/assets/source.jpg';
         $watermarkPath = __DIR__ . '/assets/watermark.gif';
-        $targetPath = '/target';
+        $targetPath = __DIR__ . '/assets/temp';
         $newName = 'new-image-name';
 
         $adapterMock = \Mockery::mock('\StefanoImage\Adapter\Gd');
@@ -306,7 +306,7 @@ class ImageTest
     public function testClearWatermarks() {
         $sourceImagePath = __DIR__ . '/assets/source.jpg';
         $watermarkPath = __DIR__ . '/assets/watermark.gif';
-        $targetPath = '/target';
+        $targetPath = __DIR__ . '/assets/temp';
         $newName = 'new-image-name';
         
         $adapterMock = \Mockery::mock('\StefanoImage\Adapter\Gd');
@@ -321,5 +321,30 @@ class ImageTest
               ->addWatermark($watermarkPath, 100, 100)
               ->clearWatermarks()
               ->save($targetPath, $newName);
+    }
+
+    public function testCreteTargetDirectoryIfNotExists() {
+        $sourceImagePath = __DIR__ . '/assets/source.jpg';
+        $targetPath = __DIR__ . '/assets/temp/this-dir/does-not-exists';
+
+        @rmdir(__DIR__ . '/assets/temp/this-dir/does-not-exists');
+        @rmdir(__DIR__ . '/assets/temp/this-dir');
+
+        $this->assertDirectoryNotExists($targetPath, 'Before test directory must not exists');
+
+        $newName = 'new-image-name';
+
+        $adapterMock = \Mockery::mock('\StefanoImage\Adapter\Gd');
+        $adapterMock->makePartial();
+        $adapterMock->shouldReceive('saveAsJpeg')
+                    ->with($targetPath, $newName, 75)
+                    ->andReturn($adapterMock)
+                    ->once();
+
+        $image = new Image($adapterMock);
+        $image->sourceImage($sourceImagePath)
+              ->save($targetPath, $newName);
+
+        $this->assertDirectoryExists($targetPath);
     }
 }

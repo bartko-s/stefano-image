@@ -1,14 +1,13 @@
 <?php
 namespace StefanoImage;
 
-use StefanoImage\ImageInterface;
-use StefanoImage\Exception\InvalidArgumentException;
-use StefanoImage\Exception\LogicException;
 use StefanoImage\Adapter\AdapterInterface as ImageAdapterInterface;
 use StefanoImage\Adapter\Gd as GdAdapter;
 use StefanoImage\Calculator\Canvas as CanvasSizeCalculator;
 use StefanoImage\Calculator\ImagePosition as ImagePositionCalculator;
 use StefanoImage\Calculator\WatermarkPosition as WatermarkPositionCalculator;
+use StefanoImage\Exception\InvalidArgumentException;
+use StefanoImage\Exception\LogicException;
 
 class Image 
     implements ImageInterface
@@ -132,6 +131,10 @@ class Image
         if(null == $sourceImagePath) {
             throw new LogicException('First you must set source image file');
         }
+
+        if(!file_exists($destination)) {
+            mkdir($destination, 0777, true);
+        }
         
         $adapter = $this->getAdapter();
 
@@ -147,7 +150,7 @@ class Image
                 $canvasSizeCalculator->getCalculatedCanvasHeight());
 
         //set background color
-        $bgColor = $this->getBackgroudnColor();
+        $bgColor = $this->getBackgroundColor();
         $adapter->backgroundColor($bgColor['red'], $bgColor['green'], $bgColor['blue']);
         
         //draw image
@@ -315,7 +318,7 @@ class Image
     /**
      * @return array keys [red, green, blue]
      */
-    private function getBackgroudnColor() {
+    private function getBackgroundColor() {
         return $this->bacgroundColor;
     }
     
