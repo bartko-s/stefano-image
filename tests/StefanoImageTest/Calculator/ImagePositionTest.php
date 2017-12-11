@@ -1,10 +1,11 @@
 <?php
 namespace StefanoImageTest\Calculator;
 
+use PHPUnit\Framework\TestCase;
 use StefanoImage\Calculator\ImagePosition as ImageCalculator;
 
 class ImagePositionTest
-    extends \PHPUnit_Framework_TestCase
+    extends TestCase
 {
     public function dataPrivider() {
         return array(

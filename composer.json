@@ -1,7 +1,7 @@
 {
     "name": "stefano/stefano-image",
     "description": "Image processing",
-    "version": "0.1.1-dev",
+    "version": "0.2.1-dev",
     "license": "BSD-3-Clause",    
     "keywords": [
         "image",
@@ -26,7 +26,7 @@
     "require-dev": {
         "phpunit/PHPUnit": ">=3.7.0",
         "mockery/mockery": ">=0.8.0",
-        "satooshi/php-coveralls": "dev-master"
+        "satooshi/php-coveralls": "^1.0"
     },
     "autoload": {
         "psr-0": {

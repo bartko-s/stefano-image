@@ -1,10 +1,11 @@
 <?php
 namespace StefanoImageTest\Calculator;
 
+use PHPUnit\Framework\TestCase;
 use StefanoImage\Calculator\Canvas as CanvasCalculator;
 
 class CanvasTest
-    extends \PHPUnit_Framework_TestCase
+    extends TestCase
 {
     public function dataProvider() {
         return array(

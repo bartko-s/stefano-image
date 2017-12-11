@@ -1,10 +1,11 @@
 <?php
 namespace StefanoImageTest\Adapter;
 
+use PHPUnit\Framework\TestCase;
 use StefanoImage\Adapter\Gd as GdAdapter;
 
 class GdTest
-    extends \PHPUnit_Framework_TestCase
+    extends TestCase
 {
     protected function setUp() {
         if(!file_exists($this->getBasePath())) {
@@ -87,9 +88,9 @@ class GdTest
         $imagePath = 'neexistuje';
         $adapter = new GdAdapter();
         $adapter->createCanvas(10, 10);
-        
-        $this->setExpectedException('\StefanoImage\Exception\InvalidArgumentException',
-                'File "' . $imagePath . '" does not exist');
+
+        $this->expectException(\StefanoImage\Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('File "' . $imagePath . '" does not exist');
         
         $adapter->drawImage($imagePath, 0, 0, 5, 5, 100);
     }
@@ -99,8 +100,8 @@ class GdTest
         $adapter = new GdAdapter();
         $adapter->createCanvas(10, 10);
         
-        $this->setExpectedException('\StefanoImage\Exception\InvalidArgumentException',
-                'Given file "' . $imagePath . '" is not image file');
+        $this->expectException(\StefanoImage\Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Given file "' . $imagePath . '" is not image file');
         
         $adapter->drawImage($imagePath, 0, 0, 5, 5, 100);
     }
@@ -110,8 +111,8 @@ class GdTest
         $adapter = new GdAdapter();
         $adapter->createCanvas(10, 10);
         
-        $this->setExpectedException('\StefanoImage\Exception\InvalidArgumentException',
-                'Given file "' . $imagePath . '" has unsupported mime type');
+        $this->expectException(\StefanoImage\Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Given file "' . $imagePath . '" has unsupported mime type');
         
         $adapter->drawImage($imagePath, 0, 0, 5, 5, 100);
     }

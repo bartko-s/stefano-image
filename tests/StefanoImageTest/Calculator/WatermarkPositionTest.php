@@ -1,11 +1,12 @@
 <?php
 namespace StefanoImageTest\Calculator;
 
+use PHPUnit\Framework\TestCase;
 use StefanoImage\ImageInterface;
 use StefanoImage\Calculator\WatermarkPosition as WatermarkPositionCalculator;
 
 class WatermarkPosition
-    extends \PHPUnit_Framework_TestCase
+    extends TestCase
 {
     public function dataProvider() {
         return array(
@@ -79,8 +80,8 @@ class WatermarkPosition
         $calculator = new WatermarkPositionCalculator(100, 100, 25, 25, 150, 150,
             $position);
 
-        $this->setExpectedException('\StefanoImage\Exception\InvalidArgumentException',
-            'Unknown position "' . $position . '"');
+        $this->expectException(\StefanoImage\Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unknown position "' . $position . '"');
 
         $calculator->getCalculatedXPosition();
     }
@@ -90,8 +91,8 @@ class WatermarkPosition
         $calculator = new WatermarkPositionCalculator(100, 100, 25, 25, 150, 150,
             $position);
 
-        $this->setExpectedException('\StefanoImage\Exception\InvalidArgumentException',
-            'Unknown position "' . $position . '"');
+        $this->expectException(\StefanoImage\Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unknown position "' . $position . '"');
 
         $calculator->getCalculatedYPosition();
     }
