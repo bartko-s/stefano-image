@@ -345,5 +345,8 @@ class ImageTest
               ->save($targetPath, $newName);
 
         $this->assertDirectoryExists($targetPath);
+
+        @rmdir(__DIR__ . '/assets/temp/this-dir/does-not-exists');
+        @rmdir(__DIR__ . '/assets/temp/this-dir');
     }
 }
