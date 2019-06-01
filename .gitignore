@@ -3,4 +3,4 @@
 /composer.lock
 /tests/temp/
 /example/
-/tests/clover.xml
+/tests/.phpunit.result.cache

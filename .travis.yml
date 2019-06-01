@@ -1,7 +1,5 @@
 language: php
 php:
-  - 7.0
-  - 7.1
   - 7.2
   - 7.3
   - nightly
@@ -9,14 +7,14 @@ php:
 
 before_script:
   - composer self-update
-  - composer install --dev
+  - composer install
 
 script: composer test
 
 after_script:
-  - php vendor/bin/coveralls -v
+  - travis_retry php vendor/bin/php-coveralls
   - wget https://scrutinizer-ci.com/ocular.phar
-  - php ocular.phar code-coverage:upload --format=php-clover tests/clover.xml
+  - php ocular.phar code-coverage:upload --format=php-clover tests/temp/clover.xml
 
 matrix:
   fast_finish: true

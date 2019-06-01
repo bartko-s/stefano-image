@@ -21,12 +21,12 @@
         }
     ],
     "require": {
-        "php": ">=7.0.0"
+        "php": ">=7.1.0"
     },
     "require-dev": {
-        "phpunit/PHPUnit": "^6.0.0",
-        "mockery/mockery": "^1.0.0",
-        "satooshi/php-coveralls": "^2.0"
+        "mockery/mockery": "^1.2.0",
+        "php-coveralls/php-coveralls": "^2.1",
+        "phpunit/phpunit": "^8.1"
     },
     "autoload": {
         "psr-0": {
@@ -41,7 +41,11 @@
             "StefanoImageTest\\": "tests/"
         }
     },
+    "minimum-stability": "stable",
+    "config": {
+        "sort-packages": true
+    },
     "scripts": {
-        "test": "vendor/bin/phpunit --configuration tests/phpunit.xml --coverage-clover tests/clover.xml"
+        "test": "vendor/bin/phpunit --configuration tests/phpunit.xml --coverage-clover tests/temp/clover.xml"
     }
 }
