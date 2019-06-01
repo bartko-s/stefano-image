@@ -1,4 +1,5 @@
 <?php
+
 namespace StefanoImage;
 
 use StefanoImage\Adapter\AdapterInterface as ImageAdapterInterface;
@@ -9,11 +10,10 @@ use StefanoImage\Calculator\WatermarkPosition as WatermarkPositionCalculator;
 use StefanoImage\Exception\InvalidArgumentException;
 use StefanoImage\Exception\LogicException;
 
-class Image 
-    implements ImageInterface
+class Image implements ImageInterface
 {
     private $adapter;
-    
+
     private $sourceImagePath;
     private $outputFormat = self::OUTPUT_FORMAT_JPEG;
     private $quality = 75;
@@ -28,18 +28,24 @@ class Image
     private $maxOutputHeight;
     private $keepSourceImageAspectRatio = true;
     private $adaptOutputResolution = true;
-    
+
     /**
      * @param ImageAdapterInterface $adapter
      */
-    public function __construct(ImageAdapterInterface $adapter = null) {
-        if(null != $adapter) {
+    public function __construct(ImageAdapterInterface $adapter = null)
+    {
+        if (null != $adapter) {
             $this->adapter = $adapter;
         }
     }
-    
-    public function addWatermark($imagePath, $maxWidthPercent, $maxHeightPercent,
-            $opacity = 30, $position = ImageInterface::WATERMARK_POSITION_CENTER) {
+
+    public function addWatermark(
+        $imagePath,
+        $maxWidthPercent,
+        $maxHeightPercent,
+        $opacity = 30,
+        $position = ImageInterface::WATERMARK_POSITION_CENTER
+    ) {
         $this->watermarks[] = array(
             'imagePath' => $imagePath,
             'maxWidthPercent' => $maxWidthPercent,
@@ -47,55 +53,61 @@ class Image
             'opacity' => $opacity,
             'position' => $position,
         );
-        
+
         return $this;
     }
 
-    public function clearWatermarks() {
+    public function clearWatermarks()
+    {
         $this->watermarks = array();
-        
+
         return $this;
     }
-    
-    public function backgroundColor($red, $green, $blue) {
+
+    public function backgroundColor($red, $green, $blue)
+    {
         $this->bacgroundColor = array(
             'red' => (int) $red,
             'green' => (int) $green,
             'blue' => (int) $blue,
         );
-        
+
         return $this;
     }
 
-    public function outputFormat($outputFormat) {
+    public function outputFormat($outputFormat)
+    {
         $outputFormat = strtolower(trim($outputFormat));
-        
-        if(self::OUTPUT_FORMAT_GIF != $outputFormat
+
+        if (self::OUTPUT_FORMAT_GIF != $outputFormat
                 && self::OUTPUT_FORMAT_JPEG != $outputFormat
                 && self::OUTPUT_FORMAT_PNG != $outputFormat) {
-            throw new InvalidArgumentException('Required "' . $outputFormat 
-                    . '" output format is not supported');
+            throw new InvalidArgumentException('Required "'.$outputFormat
+                    .'" output format is not supported');
         }
-        
+
         $this->outputFormat = $outputFormat;
+
         return $this;
     }
 
-    public function quality($quality) {
+    public function quality($quality)
+    {
         $quality = ceil($quality);
-        
-        if(1 > $quality) {
+
+        if (1 > $quality) {
             $this->quality = 1;
         } elseif (100 < $quality) {
             $this->quality = 100;
         } else {
             $this->quality = $quality;
         }
-        
+
         return $this;
     }
 
-    public function resize($maxWidth = null, $maxHeight = null) {
+    public function resize($maxWidth = null, $maxHeight = null)
+    {
         $this->maxOutputWidth = (int) $maxWidth;
         $this->maxOutputHeight = (int) $maxHeight;
         $this->adaptOutputResolution = true;
@@ -105,7 +117,8 @@ class Image
         return $this;
     }
 
-    public function adaptiveResize($width, $height) {
+    public function adaptiveResize($width, $height)
+    {
         $this->maxOutputWidth = (int) $width;
         $this->maxOutputHeight = (int) $height;
         $this->adaptOutputResolution = false;
@@ -115,7 +128,8 @@ class Image
         return $this;
     }
 
-    public function pad($width, $height) {
+    public function pad($width, $height)
+    {
         $this->maxOutputWidth = (int) $width;
         $this->maxOutputHeight = (int) $height;
         $this->adaptOutputResolution = false;
@@ -124,208 +138,234 @@ class Image
 
         return $this;
     }
-    
-    public function save($destination, $name) {
+
+    public function save($destination, $name)
+    {
         $sourceImagePath = $this->getSourceImagePath();
-        
-        if(null == $sourceImagePath) {
+
+        if (null == $sourceImagePath) {
             throw new LogicException('First you must set source image file');
         }
 
-        if(!file_exists($destination)) {
+        if (!file_exists($destination)) {
             mkdir($destination, 0777, true);
         }
-        
+
         $adapter = $this->getAdapter();
 
         //calculate and create canvas
         $canvasSizeCalculator = new CanvasSizeCalculator(
-                $this->getSourceImageWidth(), 
-                $this->getSourceImageHeight(), 
-                $this->getMaxOutputWidth(),
-                $this->getMaxOutputHeight(),
-                $this->getAdaptOutputResolution());
+            $this->getSourceImageWidth(),
+            $this->getSourceImageHeight(),
+            $this->getMaxOutputWidth(),
+            $this->getMaxOutputHeight(),
+            $this->getAdaptOutputResolution()
+        );
         $adapter->createCanvas(
-                $canvasSizeCalculator->getCalculatedCanvasWidth(), 
-                $canvasSizeCalculator->getCalculatedCanvasHeight());
+            $canvasSizeCalculator->getCalculatedCanvasWidth(),
+            $canvasSizeCalculator->getCalculatedCanvasHeight()
+        );
 
         //set background color
         $bgColor = $this->getBackgroundColor();
         $adapter->backgroundColor($bgColor['red'], $bgColor['green'], $bgColor['blue']);
-        
+
         //draw image
         $imagePositionCalculator = new ImagePositionCalculator(
-                $adapter->getCanvasWidth(),
-                $adapter->getCanvasHeight(),
-                $this->getSourceImageWidth(), 
-                $this->getSourceImageHeight(),
-                $this->getKeepSourceImageAspectRatio());
+            $adapter->getCanvasWidth(),
+            $adapter->getCanvasHeight(),
+            $this->getSourceImageWidth(),
+            $this->getSourceImageHeight(),
+            $this->getKeepSourceImageAspectRatio()
+        );
         $adapter->drawImage(
-                $sourceImagePath, 
-                $imagePositionCalculator->getCalculatedXPosition(), 
-                $imagePositionCalculator->getCalculatedYPosition(), 
-                $imagePositionCalculator->getCalculatedWidth(), 
-                $imagePositionCalculator->getCalculatedHeight(),
-                100);
+            $sourceImagePath,
+            $imagePositionCalculator->getCalculatedXPosition(),
+            $imagePositionCalculator->getCalculatedYPosition(),
+            $imagePositionCalculator->getCalculatedWidth(),
+            $imagePositionCalculator->getCalculatedHeight(),
+            100
+        );
 
         //draw watermarks
         $watermarks = $this->getWatermarks();
-        foreach($watermarks as $watermark) {
+        foreach ($watermarks as $watermark) {
             $inputWatermarkResolution = $this->getImageInfo($watermark['imagePath']);
-                        
+
             $watermarkPositionCalculator = new WatermarkPositionCalculator(
-                    $canvasSizeCalculator->getCalculatedCanvasWidth(),
-                    $canvasSizeCalculator->getCalculatedCanvasHeight(), 
-                    $watermark['maxWidthPercent'], $watermark['maxHeightPercent'],
-                    $inputWatermarkResolution['width'],
-                    $inputWatermarkResolution['height'], 
-                    $watermark['position']);
-            $adapter->drawImage($watermark['imagePath'],
-                    $watermarkPositionCalculator->getCalculatedXPosition(),
-                    $watermarkPositionCalculator->getCalculatedYPosition(),
-                    $watermarkPositionCalculator->getCalculatedWidth(),
-                    $watermarkPositionCalculator->getCalculatedHeight(),
-                    $watermark['opacity']);
+                $canvasSizeCalculator->getCalculatedCanvasWidth(),
+                $canvasSizeCalculator->getCalculatedCanvasHeight(),
+                $watermark['maxWidthPercent'],
+                $watermark['maxHeightPercent'],
+                $inputWatermarkResolution['width'],
+                $inputWatermarkResolution['height'],
+                $watermark['position']
+            );
+            $adapter->drawImage(
+                $watermark['imagePath'],
+                $watermarkPositionCalculator->getCalculatedXPosition(),
+                $watermarkPositionCalculator->getCalculatedYPosition(),
+                $watermarkPositionCalculator->getCalculatedWidth(),
+                $watermarkPositionCalculator->getCalculatedHeight(),
+                $watermark['opacity']
+            );
         }
 
         //save
         $outputFormat = $this->getOutputFormat();
-        if(self::OUTPUT_FORMAT_GIF == $outputFormat) {
+        if (self::OUTPUT_FORMAT_GIF == $outputFormat) {
             $adapter->saveAsGif($destination, $name);
         } elseif (self::OUTPUT_FORMAT_JPEG == $outputFormat) {
             $adapter->saveAsJpeg($destination, $name, $this->getQuality());
         } elseif (self::OUTPUT_FORMAT_PNG == $outputFormat) {
             $adapter->saveAsPng($destination, $name, $this->getQuality());
         } else {
-            throw new LogicException('Invalid output format "' . $outputFormat . '"');
-        }        
-        
+            throw new LogicException('Invalid output format "'.$outputFormat.'"');
+        }
+
         return $this;
     }
 
-    public function sourceImage($sourceImagePath) {
-        if(!file_exists($sourceImagePath)) {
-            throw new InvalidArgumentException('File "' . $sourceImagePath . '" does not exist');
+    public function sourceImage($sourceImagePath)
+    {
+        if (!file_exists($sourceImagePath)) {
+            throw new InvalidArgumentException('File "'.$sourceImagePath.'" does not exist');
         }
-        
+
         $fileInfo = $this->getImageInfo($sourceImagePath);
-        if(null == $fileInfo) {
-            throw new InvalidArgumentException('File "' . $sourceImagePath . '" is not image file');
+        if (null == $fileInfo) {
+            throw new InvalidArgumentException('File "'.$sourceImagePath.'" is not image file');
         }
-        
+
         $this->sourceImagePath = $sourceImagePath;
-        
+
         return $this;
     }
-    
+
     /**
-     * return null if file is not image otherwise array [width, height]
-     * 
+     * return null if file is not image otherwise array [width, height].
+     *
      * @param string $imagePath
+     *
      * @return null|array
      */
-    private function getImageInfo($imagePath) {
+    private function getImageInfo($imagePath)
+    {
         $fileInfo = getimagesize($imagePath);
-        
-        if(false == $fileInfo) {
+
+        if (false == $fileInfo) {
             return null;
-        } else {
-            return array(
-                'width' => $fileInfo[0],
-                'height' => $fileInfo[1],
-            );
         }
+
+        return array(
+            'width' => $fileInfo[0],
+            'height' => $fileInfo[1],
+        );
     }
-    
+
     /**
-     * return null if image path has not been set
-     * 
+     * return null if image path has not been set.
+     *
      * @return null|string
      */
-    private function getSourceImagePath() {
+    private function getSourceImagePath()
+    {
         return $this->sourceImagePath;
     }
-    
+
     /**
      * @return int
      */
-    private function getSourceImageWidth(){
+    private function getSourceImageWidth()
+    {
         $fileInfo = getimagesize($this->getSourceImagePath());
+
         return $fileInfo[0];
     }
-    
+
     /**
      * @return int
      */
-    private function getSourceImageHeight(){
+    private function getSourceImageHeight()
+    {
         $fileInfo = getimagesize($this->getSourceImagePath());
+
         return $fileInfo[1];
     }
-    
+
     /**
-     * @return boolean
+     * @return bool
      */
-    private function getKeepSourceImageAspectRatio(){
+    private function getKeepSourceImageAspectRatio()
+    {
         return $this->keepSourceImageAspectRatio;
     }
-    
+
     /**
      * @return string
      */
-    private function getOutputFormat() {
+    private function getOutputFormat()
+    {
         return $this->outputFormat;
     }
-    
+
     /**
      * @return \StefanoImage\Adapter\AdapterInterface
      */
-    private function getAdapter() {
-        if(null == $this->adapter) {
+    private function getAdapter()
+    {
+        if (null == $this->adapter) {
             $this->adapter = new GdAdapter();
         }
-        
+
         return $this->adapter;
     }
-    
+
     /**
      * @return int
      */
-    private function getQuality() {
+    private function getQuality()
+    {
         return $this->quality;
     }
-    
+
     /**
-     * @return int|null
+     * @return null|int
      */
-    private function getMaxOutputWidth() {
+    private function getMaxOutputWidth()
+    {
         return $this->maxOutputWidth;
     }
-    
+
     /**
-     * @return int|null
+     * @return null|int
      */
-    private function getMaxOutputHeight() {
+    private function getMaxOutputHeight()
+    {
         return $this->maxOutputHeight;
     }
-    
+
     /**
-     * @return boolean
+     * @return bool
      */
-    private function getAdaptOutputResolution() {
+    private function getAdaptOutputResolution()
+    {
         return $this->adaptOutputResolution;
     }
-    
+
     /**
      * @return array keys [red, green, blue]
      */
-    private function getBackgroundColor() {
+    private function getBackgroundColor()
+    {
         return $this->bacgroundColor;
     }
-    
+
     /**
      * @return array
      */
-    private function getWatermarks() {
+    private function getWatermarks()
+    {
         return $this->watermarks;
     }
 }

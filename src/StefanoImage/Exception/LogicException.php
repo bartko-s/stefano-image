@@ -1,8 +1,7 @@
 <?php
+
 namespace StefanoImage\Exception;
 
-class LogicException
-    extends \LogicException
+class LogicException extends \LogicException
 {
-    
 }

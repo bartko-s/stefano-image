@@ -24,6 +24,7 @@
         "php": ">=7.1.0"
     },
     "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.15",
         "mockery/mockery": "^1.2.0",
         "php-coveralls/php-coveralls": "^2.1",
         "phpunit/phpunit": "^8.1"
@@ -46,6 +47,8 @@
         "sort-packages": true
     },
     "scripts": {
-        "test": "vendor/bin/phpunit --configuration tests/phpunit.xml --coverage-clover tests/temp/clover.xml"
+        "test": "vendor/bin/phpunit --configuration tests/phpunit.xml --coverage-clover tests/temp/clover.xml",
+        "cs-check": "php-cs-fixer --version && php-cs-fixer fix -v --diff --dry-run --allow-risky no",
+        "cs-fix": "php-cs-fixer fix -v --allow-risky no"
     }
 }

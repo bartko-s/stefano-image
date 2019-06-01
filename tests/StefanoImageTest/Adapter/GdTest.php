@@ -1,39 +1,47 @@
 <?php
+
 namespace StefanoImageTest\Adapter;
 
 use StefanoImage\Adapter\Gd as GdAdapter;
 use StefanoImageTest\TestCase;
 
-class GdTest
-    extends TestCase
+/**
+ * @internal
+ * @coversNothing
+ */
+class GdTest extends TestCase
 {
-    protected function setUp(): void {
-        if(!file_exists($this->getBasePath())) {
+    protected function setUp(): void
+    {
+        if (!file_exists($this->getBasePath())) {
             mkdir($this->getBasePath(), 0777, true);
         }
     }
-    
-    protected function tearDown(): void {
+
+    protected function tearDown(): void
+    {
         $basePath = $this->getBasePath();
-        if(file_exists($basePath)) {
+        if (file_exists($basePath)) {
             $iterator = new \DirectoryIterator($basePath);
             foreach ($iterator as $file) {
-                if($file->isFile()) {
+                if ($file->isFile()) {
                     unlink($file->getPathname());
                 }
             }
-            
+
             rmdir($this->getBasePath());
         }
-        
+
         \Mockery::close();
     }
-    
-    private function getBasePath() {
-        return TEMP_BASE_DIRECOTORY . '/ImageGdAdapter';
+
+    private function getBasePath()
+    {
+        return TEMP_BASE_DIRECOTORY.'/ImageGdAdapter';
     }
-    
-    public function createCanvasAndSaveProvider() {
+
+    public function createCanvasAndSaveProvider()
+    {
         return array(
             array(123, 456, 'saveAsJpeg', 'jpeg', 'image/jpeg'),
             array(123, 456, 'saveAsJpeg', 'jpeg', 'image/jpeg', 101),
@@ -44,105 +52,127 @@ class GdTest
             array(159, 158, 'saveAsGif', 'gif', 'image/gif'),
         );
     }
-    
+
     /**
      * @dataProvider createCanvasAndSaveProvider
+     *
+     * @param mixed      $outputWidth
+     * @param mixed      $outputHeight
+     * @param mixed      $callMethod
+     * @param mixed      $extension
+     * @param mixed      $outputMimeType
+     * @param null|mixed $quality
      */
-    public function testCreateCanvasAndSave($outputWidth, $outputHeight, 
-            $callMethod, $extension, $outputMimeType, $quality = null) {
+    public function testCreateCanvasAndSave(
+        $outputWidth,
+        $outputHeight,
+        $callMethod,
+        $extension,
+        $outputMimeType,
+        $quality = null
+    ) {
         $adapter = new GdAdapter();
-        
+
         $adapter->createCanvas($outputWidth, $outputHeight);
-                
-        if(null === $quality) {
-            $adapter->$callMethod($this->getBasePath(), 'new-image');
+
+        if (null === $quality) {
+            $adapter->{$callMethod}($this->getBasePath(), 'new-image');
         } else {
-            $adapter->$callMethod($this->getBasePath(), 'new-image', $quality);
+            $adapter->{$callMethod}($this->getBasePath(), 'new-image', $quality);
         }
-        
-        $newFilePath = $this->getBasePath() . '/new-image.' . $extension;
+
+        $newFilePath = $this->getBasePath().'/new-image.'.$extension;
         $this->assertFileExists($newFilePath);
-        
+
         $fileInfo = getimagesize($newFilePath);
-        
+
         $this->assertEquals($outputWidth, $fileInfo[0]);
         $this->assertEquals($outputHeight, $fileInfo[1]);
         $this->assertEquals($outputMimeType, $fileInfo['mime']);
     }
 
-    public function testGetCanvasWidth() {
+    public function testGetCanvasWidth()
+    {
         $adapter = new GdAdapter();
         $adapter->createCanvas(150, 250);
 
         $this->assertEquals(150, $adapter->getCanvasWidth());
     }
 
-    public function testGetCanvasHeight() {
+    public function testGetCanvasHeight()
+    {
         $adapter = new GdAdapter();
         $adapter->createCanvas(150, 250);
 
         $this->assertEquals(250, $adapter->getCanvasHeight());
     }
-    
-    public function testThrowExceptionIfDrawImageDoesNotExist() {
+
+    public function testThrowExceptionIfDrawImageDoesNotExist()
+    {
         $imagePath = 'neexistuje';
         $adapter = new GdAdapter();
         $adapter->createCanvas(10, 10);
 
         $this->expectException(\StefanoImage\Exception\InvalidArgumentException::class);
-        $this->expectExceptionMessage('File "' . $imagePath . '" does not exist');
-        
+        $this->expectExceptionMessage('File "'.$imagePath.'" does not exist');
+
         $adapter->drawImage($imagePath, 0, 0, 5, 5, 100);
     }
-    
-    public function testThrowExceptionIfTryDrawImageAndGivenFileIsNotImage() {
-        $imagePath = __DIR__ . '/assets/file';
+
+    public function testThrowExceptionIfTryDrawImageAndGivenFileIsNotImage()
+    {
+        $imagePath = __DIR__.'/assets/file';
         $adapter = new GdAdapter();
         $adapter->createCanvas(10, 10);
-        
+
         $this->expectException(\StefanoImage\Exception\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Given file "' . $imagePath . '" is not image file');
-        
+        $this->expectExceptionMessage('Given file "'.$imagePath.'" is not image file');
+
         $adapter->drawImage($imagePath, 0, 0, 5, 5, 100);
     }
-    
-    public function testThrowExceptionIfTryDrawImageWithUnsupportedMimeType() {
-        $imagePath = __DIR__ . '/assets/unsupported.ico';
+
+    public function testThrowExceptionIfTryDrawImageWithUnsupportedMimeType()
+    {
+        $imagePath = __DIR__.'/assets/unsupported.ico';
         $adapter = new GdAdapter();
         $adapter->createCanvas(10, 10);
-        
+
         $this->expectException(\StefanoImage\Exception\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Given file "' . $imagePath . '" has unsupported mime type');
-        
+        $this->expectExceptionMessage('Given file "'.$imagePath.'" has unsupported mime type');
+
         $adapter->drawImage($imagePath, 0, 0, 5, 5, 100);
     }
-    
-    public function drawImageFromSupportedImageFileProvider() {
+
+    public function drawImageFromSupportedImageFileProvider()
+    {
         return array(
-            array(__DIR__ . '/assets/source.jpg'),
-            array(__DIR__ . '/assets/source.png'),
-            array(__DIR__ . '/assets/source.gif'),
+            array(__DIR__.'/assets/source.jpg'),
+            array(__DIR__.'/assets/source.png'),
+            array(__DIR__.'/assets/source.gif'),
         );
     }
-    
+
     /**
      * @dataProvider drawImageFromSupportedImageFileProvider
+     *
+     * @param mixed $file
      */
-    public function testDrawImageFromSupportedImage($file) {
+    public function testDrawImageFromSupportedImage($file)
+    {
         //test only if code is called without errors
         $adapter = new GdAdapter();
         $adapter->createCanvas(10, 10)
-                ->drawImage($file, 0, 0, 5, 5, 50)
-                ->drawImage($file, 0, 0, 5, 5, -125) //wrong opacity
-                ->drawImage($file, 0, 0, 5, 5, 1256); //wrong opacity
+            ->drawImage($file, 0, 0, 5, 5, 50)
+            ->drawImage($file, 0, 0, 5, 5, -125) //wrong opacity
+            ->drawImage($file, 0, 0, 5, 5, 1256); //wrong opacity
     }
-    
-    public function testChangeBackgroundColor() {
+
+    public function testChangeBackgroundColor()
+    {
         //test only if code is called without errors
         $adapter = new GdAdapter();
         $adapter->createCanvas(10, 10)
-                ->backgroundColor(5, 5, 5)
-                ->backgroundColor('a', '12', 589);
+            ->backgroundColor(5, 5, 5)
+            ->backgroundColor('a', '12', 589);
     }
-    
 }
