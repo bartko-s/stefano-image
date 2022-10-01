@@ -7,13 +7,13 @@ use StefanoImageTest\TestCase;
 class GdTest
     extends TestCase
 {
-    protected function setUp() {
+    protected function setUp(): void {
         if(!file_exists($this->getBasePath())) {
             mkdir($this->getBasePath(), 0777, true);
         }
     }
     
-    protected function tearDown() {
+    protected function tearDown(): void {
         $basePath = $this->getBasePath();
         if(file_exists($basePath)) {
             $iterator = new \DirectoryIterator($basePath);
